@@ -12,7 +12,7 @@ on:
       - dev
 
 env:
-  HELM_RELEASE_NAME: wm-api-deployment
+  HELM_RELEASE_NAME: wm-passthru-app-deployment
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}
   HUSKY: 0
