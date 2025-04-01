@@ -1,0 +1,28 @@
+replicaCount: 1
+ 
+image:
+  repository: ghcr.io/bcgov/mcfd-mobility-webmethods-passthru
+  tag: '<set by CI/CD>'
+  pullPolicy: Always
+ 
+service:
+  type: ClusterIP
+  port: 80
+  containerPort: 3200
+ 
+resources: {}
+ 
+nodeSelector: {}
+ 
+tolerations: []
+ 
+affinity: {}
+
+wmAppEnv: '<set by CI/CD>'
+
+aps:
+  namespace: '<set by CI/CD>'
+
+wmAppBuildLabel:
+  version: '<set by CI/CD>'
+
