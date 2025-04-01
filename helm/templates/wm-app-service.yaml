@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: wm-passthru-app-service
+  labels:
+    app.kubernetes.io/name: wm-passthru-app-service
+spec:
+  selector:
+    app.kubernetes.io/name: wm-passthru-app
+  ports:
+    - name: wm-passthru-app-service-port
+      protocol: TCP
+      port: {{ .Values.service.port }}
+      targetPort: {{ .Values.service.containerPort }}

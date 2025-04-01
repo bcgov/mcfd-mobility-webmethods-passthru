@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: wm-config
+data:
+  WM_APP_LABEL: {{ .Values.wmAppBuildLabel.version }}
+  WM_APP_ENV: {{ .Values.wmAppEnv }}

@@ -1,0 +1,100 @@
+name: Build and Deploy
+permissions:
+  contents: read
+  deployments: write
+  packages: write
+
+on:
+  push:
+    branches:
+      - main
+      - test
+      - dev
+
+env:
+  HELM_RELEASE_NAME: wm-api-deployment
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
+  HUSKY: 0
+
+jobs:
+
+  build_and_push:
+    runs-on: ubuntu-22.04
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: Checkout the repository
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Extract metadata for Docker
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+
+    outputs:
+      image_tag: ${{ steps.meta.outputs.tags }}
+
+  deploy:
+    needs: build_and_push
+    environment: ${{ github.ref_name }}
+    runs-on: ubuntu-22.04
+
+    steps:
+      - name: Checkout the repository
+        uses: actions/checkout@v4
+
+      - name: 'YAML poke: Set values from secrets'
+        uses: fjogeleit/yaml-update-action@v0.15.0
+        with:
+          valueFile: 'helm/values.yaml'
+          changes: |
+            {
+              "image.tag": "${{ github.ref_name }}",
+              "wmAppBuildLabel.version": "${{ github.ref_name }}-${{ github.run_number }}",
+              "wmAppEnv": "${{ vars.WM_APP_ENV }}",
+              "aps.namespace": "${{ secrets.APS_NAMESPACE }}"
+            }
+          commitChange: false
+
+      - name: Authenticate with OpenShift
+        uses: redhat-actions/oc-login@v1
+        with:
+          openshift_server_url: ${{ secrets.OPENSHIFT_SERVER }}
+          namespace: ${{ secrets.OPENSHIFT_NAMESPACE }}
+          openshift_token: ${{ secrets.OPENSHIFT_SERVICE_ACCOUNT_TOKEN }}
+          insecure_skip_tls_verify: true
+
+      - name: Deploy with Helm
+        run: |
+          helm upgrade --install ${{ env.HELM_RELEASE_NAME }} ./helm \
+            --namespace ${{ secrets.OPENSHIFT_NAMESPACE }} \
+            --set image.repository=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }} \
+            --set image.tag=${{ needs.build_and_push.outputs.image_tag }}
+
+      - name: Restart Pod after image update
+        run: |
+          oc rollout restart deployment \
+            --namespace ${{ secrets.OPENSHIFT_NAMESPACE }} \
+            --selector=app.kubernetes.io/name=wm-passthru-app
