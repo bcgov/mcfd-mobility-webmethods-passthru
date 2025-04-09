@@ -7,6 +7,7 @@ import { CacheModule } from '@nestjs/cache-manager';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { LoggerModule } from 'nestjs-pino';
 import { ControllersModule } from './controllers/controllers.module';
+import { ExternalApiModule } from './external-api/external-api.module';
 import configuration from './configuration/configuration';
 
 @Module({
@@ -84,6 +85,7 @@ import configuration from './configuration/configuration';
     }),
     CacheModule.register({ isGlobal: true }),
     ControllersModule,
+    ExternalApiModule,
   ],
 })
 export class AppModule {}
