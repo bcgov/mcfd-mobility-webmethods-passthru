@@ -26,3 +26,14 @@ aps:
 wmAppBuildLabel:
   version: '<set by CI/CD>'
 
+auth: '<set by CI/CD>'
+
+endpoints:
+  submitAttachment: '<set by CI/CD>'
+  caseload: '<set by CI/CD>'
+  entityDetails: '<set by CI/CD>'
+  getNotes: '<set by CI/CD>'
+  submitNotesKKCFS: '<set by CI/CD>'
+  submitNotesVisitz: '<set by CI/CD>'
+  submitSafetyAssessment: '<set by CI/CD>'
+
