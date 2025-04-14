@@ -55,15 +55,3 @@ OpenShift namespace in the form:
 Hostname and port of OpenShift cluster.
 
 Can view URL in Dashboard using the CLI login flow.
-
-### TOOLS_OPENSHIFT_NAMESPACE
-
-OpenShift namespace in the form:
-
-```
-<licence plate>-<env>
-```
-
-### TOOLS_OPENSHIFT_SERVICE_ACCOUNT_TOKEN
-
-Full JWT generated for the tools namespace service account.
