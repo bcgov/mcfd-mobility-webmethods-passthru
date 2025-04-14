@@ -8,13 +8,17 @@ All values unquoted unless otherwise mentioned.
 
 A basic auth string in the form:
 
-> Basic \<base 64\>
+```
+Basic <base 64>
+```
 
 ### OPENSHIFT_NAMESPACE
 
 OpenShift namespace in the form:
 
-> \<licence plate\>-\<env\>
+```
+<licence plate>-<env>
+```
 
 ### OPENSHIFT_SERVICE_ACCOUNT_TOKEN
 
@@ -22,23 +26,29 @@ Full JWT generated for a namespaced service account.
 
 ## Repository secrets
 
-### \*_ENDPOINT
+### *_ENDPOINT
 
 Path of a URL for upstream endpoints.
 
 For the URL:
 
-> https://www.google.com/search?q=cats
+```
+https://www.google.com/search?q=cats
+```
 
 Its path is:
 
-> /search
+```
+/search
+```
 
 ### APS_NAMESPACE
 
 OpenShift namespace in the form:
 
-> \<licence plate\>-\<env\>
+```
+<licence plate>-<env>
+```
 
 ### OPENSHIFT_SERVER
 
@@ -50,7 +60,9 @@ Can view URL in Dashboard using the CLI login flow.
 
 OpenShift namespace in the form:
 
-> \<licence plate\>-\<env\>
+```
+<licence plate>-<env>
+```
 
 ### TOOLS_OPENSHIFT_SERVICE_ACCOUNT_TOKEN
 
