@@ -10,7 +10,8 @@ export class SafetyAssessmentsService {
     private readonly requestPreparerService: RequestPreparerService,
   ) {
     this.submitEndpoint = encodeURI(
-      this.configService.get<string>('endpointUrls.submitSafetyAssessment'),
+      this.configService.get<string>('endpointUrls.baseUrl') +
+        this.configService.get<string>('endpointUrls.submitSafetyAssessment'),
     );
   }
 

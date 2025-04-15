@@ -5,6 +5,11 @@ import { HttpService } from '@nestjs/axios';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import configuration from '../../configuration/configuration';
 import { RequestPreparerService } from '../../external-api/request-preparer/request-preparer.service';
+import { UtilitiesService } from '../../helpers/utilities/utilities.service';
+import { JwtModule } from '@nestjs/jwt';
+import { CACHE_MANAGER } from '@nestjs/cache-manager';
+import { TokenRefresherService } from '../../external-api/token-refresher/token-refresher.service';
+import { AuthService } from '../../common/guards/auth/auth.service';
 
 describe('NotesController', () => {
   let controller: NotesController;
@@ -16,8 +21,15 @@ describe('NotesController', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      imports: [ConfigModule.forRoot({ load: [configuration] })],
+      imports: [
+        ConfigModule.forRoot({ load: [configuration] }),
+        JwtModule.register({ global: true }),
+      ],
       providers: [
+        TokenRefresherService,
+        { provide: CACHE_MANAGER, useValue: {} },
+        UtilitiesService,
+        AuthService,
         NotesService,
         { provide: HttpService, useValue: { post: jest.fn() } },
         ConfigService,

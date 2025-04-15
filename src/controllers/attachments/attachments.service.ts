@@ -10,7 +10,8 @@ export class AttachmentsService {
     private readonly requestPreparerService: RequestPreparerService,
   ) {
     this.submitEndpoint = encodeURI(
-      this.configService.get<string>('endpointUrls.submitAttachment'),
+      this.configService.get<string>('endpointUrls.baseUrl') +
+        this.configService.get<string>('endpointUrls.submitAttachment'),
     );
   }
 

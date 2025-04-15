@@ -5,6 +5,11 @@ import { HttpService } from '@nestjs/axios';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import configuration from '../../configuration/configuration';
 import { RequestPreparerService } from '../../external-api/request-preparer/request-preparer.service';
+import { CACHE_MANAGER } from '@nestjs/cache-manager';
+import { JwtModule } from '@nestjs/jwt';
+import { AuthService } from '../../common/guards/auth/auth.service';
+import { TokenRefresherService } from '../../external-api/token-refresher/token-refresher.service';
+import { UtilitiesService } from '../../helpers/utilities/utilities.service';
 
 describe('EntitiesController', () => {
   let controller: EntitiesController;
@@ -16,8 +21,15 @@ describe('EntitiesController', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      imports: [ConfigModule.forRoot({ load: [configuration] })],
+      imports: [
+        ConfigModule.forRoot({ load: [configuration] }),
+        JwtModule.register({ global: true }),
+      ],
       providers: [
+        TokenRefresherService,
+        { provide: CACHE_MANAGER, useValue: {} },
+        UtilitiesService,
+        AuthService,
         EntitiesService,
         { provide: HttpService, useValue: { post: jest.fn() } },
         ConfigService,

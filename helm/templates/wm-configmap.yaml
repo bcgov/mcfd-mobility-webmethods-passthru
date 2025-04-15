@@ -13,3 +13,29 @@ data:
   SUBMIT_NOTES_KKCFS_ENDPOINT: {{ .Values.endpoints.submitNotesKKCFS }}
   SUBMIT_NOTES_VISITZ_ENDPOINT: {{ .Values.endpoints.submitNotesVisitz }}
   SUBMIT_SAFETY_ASSESSMENT_ENDPOINT: {{ .Values.endpoints.submitSafetyAssessment }}
+  UPSTREAM_API_URL: {{ .Values.upstreamApiUrl }}
+  CLIENT_ID: {{ .Values.clientId }}
+  CLIENT_SECRET: {{ .Values.clientSecret }}
+  SIEBEL_URL: {{ .Values.siebelUrl }}
+  ACCESS_TOKEN_URL: {{ .Values.accessTokenUrl }}
+  NODE_ENV: {{ .Values.nodeEnv }}
+  SKIP_JWT_CACHE: "{{ .Values.skipJWTCache }}"
+  RECORD_CACHE_MS: {{ .Values.recordCacheMs }}
+  CASE_ENDPOINT: {{ .Values.endpoints.case }}
+  INCIDENT_ENDPOINT: {{ .Values.endpoints.incident }}
+  SR_ENDPOINT: {{ .Values.endpoints.sr }}
+  MEMO_ENDPOINT: {{ .Values.endpoints.memo }}
+  EMPLOYEE_ENDPOINT: {{ .Values.endpoints.employee }}
+  CASE_SEARCHSPEC_IDIR_FIELD: {{ .Values.searchspecs.case }}
+  INCIDENT_SEARCHSPEC_IDIR_FIELD: {{ .Values.searchspecs.incident }}
+  SR_SEARCHSPEC_IDIR_FIELD: {{ .Values.searchspecs.sr }}
+  MEMO_SEARCHSPEC_IDIR_FIELD: {{ .Values.searchspecs.memo }}
+  CASE_WORKSPACE: {{ .Values.workspaces.case }}
+  INCIDENT_WORKSPACE: {{ .Values.workspaces.incident }}
+  SR_WORKSPACE: {{ .Values.workspaces.sr }}
+  MEMO_WORKSPACE: {{ .Values.workspaces.memo }}
+  EMPLOYEE_WORKSPACE: {{ .Values.workspaces.employee }}
+  CASE_ID_FIELDNAME: {{ .Values.idFields.case }}
+  INCIDENT_ID_FIELDNAME: {{ .Values.idFields.incident }}
+  SR_ID_FIELDNAME: {{ .Values.idFields.sr }}
+  MEMO_ID_FIELDNAME: {{ .Values.idFields.memo }}

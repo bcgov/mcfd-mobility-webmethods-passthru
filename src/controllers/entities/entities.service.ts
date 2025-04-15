@@ -11,10 +11,12 @@ export class EntitiesService {
     private readonly requestPreparerService: RequestPreparerService,
   ) {
     this.caseloadEndpoint = encodeURI(
-      this.configService.get<string>('endpointUrls.caseload'),
+      this.configService.get<string>('endpointUrls.baseUrl') +
+        this.configService.get<string>('endpointUrls.caseload'),
     );
     this.entityDetailsEndpoint = encodeURI(
-      this.configService.get<string>('endpointUrls.entityDetails'),
+      this.configService.get<string>('endpointUrls.baseUrl') +
+        this.configService.get<string>('endpointUrls.entityDetails'),
     );
   }
 

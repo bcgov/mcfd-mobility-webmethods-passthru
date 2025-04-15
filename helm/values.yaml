@@ -24,9 +24,19 @@ aps:
   namespace: '<set by CI/CD>'
 
 wmAppBuildLabel:
-  version: '<set by CI/CD>'
+  version: '<set by CI/CD>' 
 
 auth: '<set by CI/CD>'
+clientId: '<set by CI/CD>'
+clientSecret: '<set by CI/CD>'
+
+upstreamApiUrl: '<set by CI/CD>'
+siebelUrl: '<set by CI/CD>'
+accessTokenUrl: '<set by CI/CD>'
+nodeEnv: production
+skipJWTCache: 'false'
+
+recordCacheMs: '<set by CI/CD>'
 
 endpoints:
   submitAttachment: '<set by CI/CD>'
@@ -36,4 +46,30 @@ endpoints:
   submitNotesKKCFS: '<set by CI/CD>'
   submitNotesVisitz: '<set by CI/CD>'
   submitSafetyAssessment: '<set by CI/CD>'
+  case: '<set by CI/CD>'
+  incident: '<set by CI/CD>'
+  sr: '<set by CI/CD>'
+  memo: '<set by CI/CD>'
+  employee: '<set by CI/CD>'
+
+searchspecs:
+  case: '<set by CI/CD>'
+  incident: '<set by CI/CD>'
+  sr: '<set by CI/CD>'
+  memo: '<set by CI/CD>'
+
+workspaces:
+  case: '<set by CI/CD>'
+  incident: '<set by CI/CD>'
+  sr: '<set by CI/CD>'
+  memo: '<set by CI/CD>'
+  employee: '<set by CI/CD>'
+
+idFields:
+  case: '<set by CI/CD>'
+  incident: '<set by CI/CD>'
+  sr: '<set by CI/CD>'
+  memo: '<set by CI/CD>'
+
+
 
