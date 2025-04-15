@@ -34,7 +34,7 @@ upstreamApiUrl: '<set by CI/CD>'
 siebelUrl: '<set by CI/CD>'
 accessTokenUrl: '<set by CI/CD>'
 nodeEnv: production
-skipJWTCache: false
+skipJWTCache: 'false'
 
 recordCacheMs: '<set by CI/CD>'
 
