@@ -19,7 +19,7 @@ data:
   SIEBEL_URL: {{ .Values.siebelUrl }}
   ACCESS_TOKEN_URL: {{ .Values.accessTokenUrl }}
   NODE_ENV: {{ .Values.nodeEnv }}
-  SKIP_JWT_CACHE: {{ .Values.skipJWTCache }}
+  SKIP_JWT_CACHE: "{{ .Values.skipJWTCache }}"
   RECORD_CACHE_MS: {{ .Values.recordCacheMs }}
   CASE_ENDPOINT: {{ .Values.endpoints.case }}
   INCIDENT_ENDPOINT: {{ .Values.endpoints.incident }}
