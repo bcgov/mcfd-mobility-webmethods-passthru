@@ -159,6 +159,19 @@ export class AuthService {
         body,
         'incidentNumber',
       );
+      if (incidentNumber === undefined) {
+        const caseIncidentNumber = this.utilitiesService.findNestedValue(
+          body,
+          'caseIncidentNumber',
+        );
+        return [
+          this.utilitiesService.findNestedValue(
+            body,
+            'entityType',
+          ) as EntityType,
+          caseIncidentNumber,
+        ];
+      }
       return [EntityType.Incident, incidentNumber];
     }
     return [
