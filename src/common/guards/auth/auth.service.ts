@@ -154,16 +154,28 @@ export class AuthService {
       body,
       'entityNumber',
     );
-    if (entityNumber === undefined) {
-      const incidentNumber = this.utilitiesService.findNestedValue(
-        body,
-        'incidentNumber',
-      );
+    if (entityNumber !== undefined) {
+      return [
+        this.utilitiesService.findNestedValue(body, 'entityType') as EntityType,
+        entityNumber,
+      ];
+    }
+
+    const incidentNumber = this.utilitiesService.findNestedValue(
+      body,
+      'incidentNumber',
+    );
+    if (incidentNumber !== undefined) {
       return [EntityType.Incident, incidentNumber];
     }
+
+    const caseIncidentNumber = this.utilitiesService.findNestedValue(
+      body,
+      'caseIncidentNumber',
+    );
     return [
       this.utilitiesService.findNestedValue(body, 'entityType') as EntityType,
-      entityNumber,
+      caseIncidentNumber,
     ];
   }
 
