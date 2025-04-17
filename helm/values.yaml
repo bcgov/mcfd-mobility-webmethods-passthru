@@ -35,6 +35,7 @@ siebelUrl: '<set by CI/CD>'
 accessTokenUrl: '<set by CI/CD>'
 nodeEnv: production
 skipJWTCache: 'false'
+bodyLimit: '<set by CI/CD>'
 
 recordCacheMs: '<set by CI/CD>'
 

@@ -106,7 +106,8 @@ jobs:
               "idFields.case": "${{ secrets.CASE_ID_FIELDNAME }}",
               "idFields.incident": "${{ secrets.INCIDENT_ID_FIELDNAME }}",
               "idFields.sr": "${{ secrets.SR_ID_FIELDNAME }}",
-              "idFields.memo": "${{ secrets.MEMO_ID_FIELDNAME }}"
+              "idFields.memo": "${{ secrets.MEMO_ID_FIELDNAME }}",
+              "bodyLimit": "${{ secrets.BODY_SIZE_LIMIT }}"
             }
           commitChange: false
 
