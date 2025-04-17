@@ -16,7 +16,7 @@ async function bootstrap() {
     type: VersioningType.URI,
     defaultVersion: versionNumber,
   });
-  const bodyLimit = process.env.BODY_SIZE_LIMIT ?? '6mb';
+  const bodyLimit = process.env.BODY_SIZE_LIMIT ?? '7mb';
   app.use(urlencoded({ extended: true, limit: bodyLimit }));
 
   const port = process.env.PORT ?? 3200;
