@@ -4,6 +4,7 @@ import { AppModule } from './app.module';
 import { Logger } from 'nestjs-pino';
 import { Logger as NestJSLogger, VersioningType } from '@nestjs/common';
 import { versionNumber } from './common/constants/parameter-constants';
+import { urlencoded } from 'express';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule, {
@@ -15,6 +16,8 @@ async function bootstrap() {
     type: VersioningType.URI,
     defaultVersion: versionNumber,
   });
+  const bodyLimit = process.env.BODY_SIZE_LIMIT ?? '6mb';
+  app.use(urlencoded({ extended: true, limit: bodyLimit }));
 
   const port = process.env.PORT ?? 3200;
   await app.listen(port);

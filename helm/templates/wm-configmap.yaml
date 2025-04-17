@@ -39,3 +39,4 @@ data:
   INCIDENT_ID_FIELDNAME: {{ .Values.idFields.incident }}
   SR_ID_FIELDNAME: {{ .Values.idFields.sr }}
   MEMO_ID_FIELDNAME: {{ .Values.idFields.memo }}
+  BODY_SIZE_LIMIT: {{ .Values.bodyLimit }}
