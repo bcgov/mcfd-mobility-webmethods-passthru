@@ -36,6 +36,7 @@ accessTokenUrl: '<set by CI/CD>'
 nodeEnv: production
 skipJWTCache: 'false'
 bodyLimit: '<set by CI/CD>'
+maxFileSizeBytes: '<set by CI/CD>'
 
 recordCacheMs: '<set by CI/CD>'
 
@@ -71,6 +72,16 @@ idFields:
   incident: '<set by CI/CD>'
   sr: '<set by CI/CD>'
   memo: '<set by CI/CD>'
+
+clamav:
+  debugMode: '<set by CI/CD>'
+  host: '<set by CI/CD>'
+  port: '<set by CI/CD>'
+  timeout: '<set by CI/CD>'
+  configFile: '<set by CI/CD>'
+  multiScan: '<set by CI/CD>'
+  bypassTest: '<set by CI/CD>'
+
 
 
 

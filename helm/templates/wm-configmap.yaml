@@ -40,3 +40,11 @@ data:
   SR_ID_FIELDNAME: {{ .Values.idFields.sr }}
   MEMO_ID_FIELDNAME: {{ .Values.idFields.memo }}
   BODY_SIZE_LIMIT: {{ .Values.bodyLimit }}
+  MAX_FILE_SIZE_BYTES: {{ .Values.maxFileSizeBytes}}
+  CLAM_DEBUG_MODE: {{ .Values.clamav.debugMode }}
+  CLAMD_HOST: {{ .Values.clamav.host }}
+  CLAMD_PORT: {{ .Values.clamav.port }}
+  CLAMD_TIMEOUT: {{ .Values.clamav.timeout }}
+  CLAMD_CONFIG_FILE: {{ .Values.clamav.configFile }}
+  CLAMD_MULTI_SCAN: {{ .Values.clamav.multiScan }}
+  CLAMD_BYPASS_TEST: {{ .Values.clamav.bypassTest }}

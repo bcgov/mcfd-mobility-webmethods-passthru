@@ -5,6 +5,9 @@ export default () => ({
   buildInfo: {
     buildNumber: process.env.WM_APP_LABEL ?? 'localBuild',
   },
+  fileUpload: {
+    maxFileSizeBytes: parseInt(process.env.MAX_FILE_SIZE_BYTES) ?? 5242880,
+  },
   auth: {
     authInfo: process.env.AUTH_STRING ?? ' ',
     case: {
@@ -58,4 +61,30 @@ export default () => ({
     process.env.WM_APP_ENV === 'prod'
       ? false
       : process.env.SKIP_JWT_CACHE === 'true',
+  clamav: {
+    debugMode:
+      process.env.CLAM_DEBUG_MODE != undefined
+        ? process.env.CLAM_DEBUG_MODE === 'true'
+        : false,
+    clamdscan: {
+      host: process.env.CLAMD_HOST,
+      port: parseInt(process.env.CLAMD_PORT),
+      timeout: process.env.CLAMD_TIMEOUT
+        ? parseInt(process.env.CLAMD_TIMEOUT)
+        : 120000,
+      configFile:
+        process.env.CLAMD_CONFIG_FILE && process.env.CLAMD_CONFIG_FILE != 'null'
+          ? process.env.CLAMD_CONFIG_FILE
+          : null,
+      // Whether or not to use multiple cores when scanning
+      multiscan:
+        process.env.CLAMD_MULTI_SCAN != undefined
+          ? process.env.CLAMD_MULTI_SCAN === 'true'
+          : false,
+      bypassTest:
+        process.env.CLAMD_BYPASS_TEST != undefined
+          ? process.env.CLAMD_BYPASS_TEST === 'true'
+          : false,
+    },
+  },
 });
