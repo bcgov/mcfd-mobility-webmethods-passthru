@@ -46,8 +46,8 @@ export default () => ({
     clientSecret: process.env.CLIENT_SECRET ?? ' ',
   },
   endpointUrls: {
-    baseUrl: process.env.UPSTREAM_API_URL ?? ' ',
-    siebelUrl: process.env.SIEBEL_URL ?? ' ',
+    workflowUrl: process.env.WORKFLOW_API_URL ?? ' ',
+    dataApiUrl: process.env.DATA_API_URL ?? ' ',
     submitAttachment: process.env.SUBMIT_ATTACHMENT_ENDPOINT ?? ' ',
     caseload: process.env.CASELOAD_ENDPOINT ?? ' ',
     entityDetails: process.env.ENTITY_DETAILS_ENDPOINT ?? ' ',

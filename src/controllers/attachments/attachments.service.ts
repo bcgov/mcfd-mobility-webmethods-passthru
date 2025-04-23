@@ -16,7 +16,7 @@ export class AttachmentsService {
     private readonly virusScanService: VirusScanService,
   ) {
     this.submitEndpoint = encodeURI(
-      this.configService.get<string>('endpointUrls.baseUrl') +
+      this.configService.get<string>('endpointUrls.workflowUrl') +
         this.configService.get<string>('endpointUrls.submitAttachment'),
     );
   }

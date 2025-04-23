@@ -27,7 +27,7 @@ import { UtilitiesService } from '../../../helpers/utilities/utilities.service';
 export class AuthService {
   skipJWT: boolean;
   cacheTime: number;
-  baseSiebelUrl: string;
+  basedataApiUrl: string;
   buildNumber: string;
   employeeWorkspace: string;
   employeeEndpoint: string;
@@ -41,8 +41,8 @@ export class AuthService {
     private readonly tokenRefresherService: TokenRefresherService,
   ) {
     this.cacheTime = this.configService.get<number>('recordCache.cacheTtlMs');
-    this.baseSiebelUrl = encodeURI(
-      this.configService.get<string>('endpointUrls.siebelUrl'),
+    this.basedataApiUrl = encodeURI(
+      this.configService.get<string>('endpointUrls.dataApiUrl'),
     );
     this.buildNumber = this.configService.get<string>('buildInfo.buildNumber');
     this.skipJWT = this.configService.get<boolean>('skipJWTCache');
@@ -231,7 +231,7 @@ export class AuthService {
       [authIdirHeaderName]: idir,
     };
     const url =
-      this.baseSiebelUrl +
+      this.basedataApiUrl +
       this.configService.get<string>(`auth.${recordType}.endpoint`);
 
     let response;
@@ -281,7 +281,7 @@ export class AuthService {
       'Accept-Encoding': '*',
       [authIdirHeaderName]: idir,
     };
-    const url = this.baseSiebelUrl + this.employeeEndpoint;
+    const url = this.basedataApiUrl + this.employeeEndpoint;
 
     let response;
     try {

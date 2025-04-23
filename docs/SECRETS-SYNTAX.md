@@ -24,7 +24,7 @@ OpenShift namespace in the form:
 
 Full JWT generated for a namespaced service account.
 
-### UPSTREAM_API_URL
+### WORKFLOW_API_URL
 
 Protocol and hostname of upstream API server, e.g.
 
