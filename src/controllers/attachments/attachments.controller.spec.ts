@@ -10,6 +10,8 @@ import { JwtModule } from '@nestjs/jwt';
 import { AuthService } from '../../common/guards/auth/auth.service';
 import { TokenRefresherService } from '../../external-api/token-refresher/token-refresher.service';
 import { UtilitiesService } from '../../helpers/utilities/utilities.service';
+import { FileUploadService } from '../../helpers/file-upload/file-upload.service';
+import { VirusScanService } from '../../helpers/virus-scan/virus-scan.service';
 
 describe('AttachmentsController', () => {
   let controller: AttachmentsController;
@@ -30,6 +32,9 @@ describe('AttachmentsController', () => {
         { provide: HttpService, useValue: { post: jest.fn() } },
         ConfigService,
         RequestPreparerService,
+        UtilitiesService,
+        FileUploadService,
+        VirusScanService,
       ],
       controllers: [AttachmentsController],
     }).compile();

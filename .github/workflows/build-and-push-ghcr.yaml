@@ -107,7 +107,15 @@ jobs:
               "idFields.incident": "${{ secrets.INCIDENT_ID_FIELDNAME }}",
               "idFields.sr": "${{ secrets.SR_ID_FIELDNAME }}",
               "idFields.memo": "${{ secrets.MEMO_ID_FIELDNAME }}",
-              "bodyLimit": "${{ secrets.BODY_SIZE_LIMIT }}"
+              "bodyLimit": "${{ secrets.BODY_SIZE_LIMIT }}",
+              "maxFileSizeBytes": "${{ secrets.MAX_FILE_SIZE_BYTES }}",
+              "clamav.debugMode": "${{ secrets.CLAM_DEBUG_MODE }}",
+              "clamav.host": "${{ secrets.CLAMD_HOST }}",
+              "clamav.port": "${{ secrets.CLAMD_PORT }}",
+              "clamav.timeout": "${{ secrets.CLAMD_TIMEOUT }}",
+              "clamav.configFile": "${{ secrets.CLAMD_CONFIG_FILE }}",
+              "clamav.multiScan": "${{ secrets.CLAMD_MULTI_SCAN }}",
+              "clamav.bypassTest": "${{ secrets.CLAMD_BYPASS_TEST }}"
             }
           commitChange: false
 
