@@ -30,8 +30,8 @@ auth: '<set by CI/CD>'
 clientId: '<set by CI/CD>'
 clientSecret: '<set by CI/CD>'
 
-upstreamApiUrl: '<set by CI/CD>'
-siebelUrl: '<set by CI/CD>'
+workflowApiUrl: '<set by CI/CD>'
+dataApiUrl: '<set by CI/CD>'
 accessTokenUrl: '<set by CI/CD>'
 nodeEnv: production
 skipJWTCache: 'false'
