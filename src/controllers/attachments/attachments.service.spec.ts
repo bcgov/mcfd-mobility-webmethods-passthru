@@ -52,7 +52,7 @@ describe('AttachmentsService', () => {
         .spyOn(requestPreparerService, 'sendPostRequest')
         .mockResolvedValueOnce(mockResult);
       const body = {
-        docRequest: `{"PDFString":"${base64FileString}", "fileName":"filename"}`,
+        docRequest: `{"requestFormAttachment":{ "payLoad": { "attachment": {"PDFString":"${base64FileString}"}}}, "fileName":"filename"}`,
       };
       const headers = { headers: 'headers' };
 

@@ -23,10 +23,8 @@ export class AttachmentsService {
 
   async submitAttachment(body, headers) {
     const reqField = JSON.parse(body.docRequest);
-    const fileString = this.utilitiesService.findNestedValue(
-      reqField,
-      'PDFString',
-    );
+    const fileString =
+      reqField.requestFormAttachment.payLoad.attachment.PDFString;
     const filename = this.utilitiesService.findNestedValue(
       reqField,
       'fileName',
