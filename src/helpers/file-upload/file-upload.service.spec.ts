@@ -4,10 +4,11 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import configuration from '../../configuration/configuration';
 import * as loadEsm from 'load-esm';
 import { base64FileString } from '../../common/constants/test-constants';
-import { HttpException } from '@nestjs/common';
+import { BadRequestException } from '@nestjs/common';
 
 describe('FileUploadService', () => {
   let service: FileUploadService;
+  const filename = 'filename';
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -24,14 +25,17 @@ describe('FileUploadService', () => {
 
   describe('fileBufferAndTypeCheck tests', () => {
     it('should return file buffer on valid file', async () => {
-      const file = await service.fileBufferAndTypeCheck(base64FileString);
+      const file = await service.fileBufferAndTypeCheck(
+        base64FileString,
+        filename,
+      );
       expect(file).toBeInstanceOf(Buffer<ArrayBuffer>);
     });
   });
 
   describe('base64ToFileBuffer tests', () => {
     it('should return buffer on happy path', () => {
-      const file = service.base64ToFileBuffer(base64FileString);
+      const file = service.base64ToFileBuffer(base64FileString, filename);
       expect(file).toBeInstanceOf(Buffer<ArrayBuffer>);
     });
 
@@ -55,8 +59,8 @@ describe('FileUploadService', () => {
       }).compile();
       service = module.get<FileUploadService>(FileUploadService);
       expect(() => {
-        service.base64ToFileBuffer(base64FileString);
-      }).toThrow(HttpException);
+        service.base64ToFileBuffer(base64FileString, filename);
+      }).toThrow(BadRequestException);
     });
   });
 
@@ -78,8 +82,11 @@ describe('FileUploadService', () => {
         .spyOn(service, 'fileTypeFunction')
         .mockResolvedValueOnce({ mime: 'application/java-archive' });
       await expect(
-        service.isValidFileType(Buffer.from([11, 22, 33, 44, 55, 66])),
-      ).rejects.toThrow(HttpException);
+        service.isValidFileType(
+          Buffer.from([11, 22, 33, 44, 55, 66]),
+          filename,
+        ),
+      ).rejects.toThrow(BadRequestException);
       expect(fileTypeSpy).toHaveBeenCalledTimes(1);
     });
   });

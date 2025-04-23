@@ -1,4 +1,9 @@
-import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  Logger,
+  UnprocessableEntityException,
+} from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import * as NodeClam from 'clamscan';
 import {
@@ -50,26 +55,32 @@ export class VirusScanService {
     }
   }
 
-  async scanFile(file: Buffer<ArrayBuffer>): Promise<void> {
+  async scanFile(file: Buffer<ArrayBuffer>, filename: string): Promise<void> {
     await this.initNodeClam();
     const stream = Readable.from(file);
     const result = await this.clamScan.scanStream(stream);
     if (result.isInfected) {
       this.logger.error({
         msg: `File is infected!`,
+        fileSize: `${file.byteLength} bytes`,
+        fileName: filename,
         viruses: result.viruses,
         buildNumber: this.buildNumber,
       });
-      throw new HttpException(virusInfectedError, HttpStatus.OK);
+      throw new BadRequestException(virusInfectedError);
     } else if (result.isInfected === null) {
       this.logger.error({
         msg: `File could not be scanned.`,
+        fileSize: `${file.byteLength} bytes`,
+        fileName: filename,
         buildNumber: this.buildNumber,
       });
-      throw new HttpException(virusScanFailedError, HttpStatus.OK);
+      throw new UnprocessableEntityException(virusScanFailedError);
     }
     this.logger.log({
       msg: `File is clean!`,
+      fileSize: `${file.byteLength} bytes`,
+      fileName: filename,
       buildNumber: this.buildNumber,
     });
   }

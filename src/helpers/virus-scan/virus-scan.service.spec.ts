@@ -3,11 +3,15 @@ import { VirusScanService } from './virus-scan.service';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import configuration from '../../configuration/configuration';
 import * as NodeClam from 'clamscan';
-import { HttpException } from '@nestjs/common';
+import {
+  BadRequestException,
+  UnprocessableEntityException,
+} from '@nestjs/common';
 
 describe('VirusScanService', () => {
   let service: VirusScanService;
   let file: Buffer<ArrayBuffer>;
+  const filename = 'filename';
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -32,7 +36,7 @@ describe('VirusScanService', () => {
         .mockImplementationOnce(() => {
           return { file: null, isInfected: false, viruses: [] };
         });
-      await service.scanFile(file);
+      await service.scanFile(file, filename);
       expect(scanSpy).toHaveBeenCalledTimes(1);
     });
 
@@ -44,7 +48,9 @@ describe('VirusScanService', () => {
         .mockImplementationOnce(() => {
           return { file: null, isInfected: true, viruses: ['virus here'] };
         });
-      await expect(service.scanFile(file)).rejects.toThrow(HttpException);
+      await expect(service.scanFile(file, filename)).rejects.toThrow(
+        BadRequestException,
+      );
       expect(scanSpy).toHaveBeenCalledTimes(1);
     });
 
@@ -56,7 +62,9 @@ describe('VirusScanService', () => {
         .mockImplementationOnce(() => {
           return { file: null, isInfected: null, viruses: [] };
         });
-      await expect(service.scanFile(file)).rejects.toThrow(HttpException);
+      await expect(service.scanFile(file, filename)).rejects.toThrow(
+        UnprocessableEntityException,
+      );
       expect(scanSpy).toHaveBeenCalledTimes(1);
     });
   });

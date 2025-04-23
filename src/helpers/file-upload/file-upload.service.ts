@@ -1,4 +1,4 @@
-import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
+import { BadRequestException, Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { loadEsm } from 'load-esm';
 import {
@@ -25,21 +25,23 @@ export class FileUploadService {
     this.buildNumber = this.configService.get<string>('buildInfo.buildNumber');
   }
 
-  async fileBufferAndTypeCheck(input: string) {
-    const file = this.base64ToFileBuffer(input);
-    await this.isValidFileType(file);
+  async fileBufferAndTypeCheck(input: string, filename: string) {
+    const file = this.base64ToFileBuffer(input, filename);
+    await this.isValidFileType(file, filename);
     return file;
   }
 
-  base64ToFileBuffer(input: string): Buffer {
+  base64ToFileBuffer(input: string, filename: string): Buffer {
     const file = Buffer.from(input, 'base64');
     if (file.byteLength > this.maxFileSize) {
       this.logger.error({
         msg: fileSizeError,
+        fileSize: `${file.byteLength} bytes`,
+        fileName: filename,
         buildNumber: this.buildNumber,
         function: this.base64ToFileBuffer.name,
       });
-      throw new HttpException(fileSizeError, HttpStatus.OK);
+      throw new BadRequestException(fileSizeError);
     }
     return file;
   }
@@ -57,7 +59,10 @@ export class FileUploadService {
    * Indicates if this file should be considered valid.
    * @param file the file as a buffer
    */
-  async isValidFileType(file: Buffer<ArrayBuffer>): Promise<boolean> {
+  async isValidFileType(
+    file: Buffer<ArrayBuffer>,
+    filename: string,
+  ): Promise<boolean> {
     await this.loadFileTypeModule();
     const fileType = await this.fileTypeFunction(file);
     if (
@@ -66,10 +71,12 @@ export class FileUploadService {
     ) {
       this.logger.error({
         msg: fileTypeError,
+        fileSize: `${file.byteLength} bytes`,
+        fileName: filename,
         buildNumber: this.buildNumber,
         function: this.isValidFileType.name,
       });
-      throw new HttpException(fileTypeError, HttpStatus.OK);
+      throw new BadRequestException(fileTypeError);
     }
     return true;
   }

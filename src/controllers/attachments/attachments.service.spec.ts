@@ -51,7 +51,9 @@ describe('AttachmentsService', () => {
       const requestSpy = jest
         .spyOn(requestPreparerService, 'sendPostRequest')
         .mockResolvedValueOnce(mockResult);
-      const body = { docRequest: `{"PDFString":"${base64FileString}"}` };
+      const body = {
+        docRequest: `{"PDFString":"${base64FileString}", "fileName":"filename"}`,
+      };
       const headers = { headers: 'headers' };
 
       const fileUploadSpy = jest

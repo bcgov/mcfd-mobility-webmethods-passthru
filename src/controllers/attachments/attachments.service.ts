@@ -22,13 +22,20 @@ export class AttachmentsService {
   }
 
   async submitAttachment(body, headers) {
+    const reqField = JSON.parse(body.docRequest);
     const fileString = this.utilitiesService.findNestedValue(
-      JSON.parse(body.docRequest),
+      reqField,
       'PDFString',
     );
-    const fileBuffer =
-      await this.fileUploadService.fileBufferAndTypeCheck(fileString);
-    await this.virusScanService.scanFile(fileBuffer);
+    const filename = this.utilitiesService.findNestedValue(
+      reqField,
+      'fileName',
+    );
+    const fileBuffer = await this.fileUploadService.fileBufferAndTypeCheck(
+      fileString,
+      filename,
+    );
+    await this.virusScanService.scanFile(fileBuffer, filename);
     return await this.requestPreparerService.sendPostRequest(
       this.submitEndpoint,
       body,
