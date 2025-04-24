@@ -24,5 +24,64 @@ aps:
   namespace: '<set by CI/CD>'
 
 wmAppBuildLabel:
-  version: '<set by CI/CD>'
+  version: '<set by CI/CD>' 
+
+auth: '<set by CI/CD>'
+clientId: '<set by CI/CD>'
+clientSecret: '<set by CI/CD>'
+
+workflowApiUrl: '<set by CI/CD>'
+dataApiUrl: '<set by CI/CD>'
+accessTokenUrl: '<set by CI/CD>'
+nodeEnv: production
+skipJWTCache: 'false'
+bodyLimit: '<set by CI/CD>'
+maxFileSizeBytes: '<set by CI/CD>'
+
+recordCacheMs: '<set by CI/CD>'
+
+endpoints:
+  submitAttachment: '<set by CI/CD>'
+  caseload: '<set by CI/CD>'
+  entityDetails: '<set by CI/CD>'
+  getNotes: '<set by CI/CD>'
+  submitNotesKKCFS: '<set by CI/CD>'
+  submitNotesVisitz: '<set by CI/CD>'
+  submitSafetyAssessment: '<set by CI/CD>'
+  case: '<set by CI/CD>'
+  incident: '<set by CI/CD>'
+  sr: '<set by CI/CD>'
+  memo: '<set by CI/CD>'
+  employee: '<set by CI/CD>'
+
+searchspecs:
+  case: '<set by CI/CD>'
+  incident: '<set by CI/CD>'
+  sr: '<set by CI/CD>'
+  memo: '<set by CI/CD>'
+
+workspaces:
+  case: '<set by CI/CD>'
+  incident: '<set by CI/CD>'
+  sr: '<set by CI/CD>'
+  memo: '<set by CI/CD>'
+  employee: '<set by CI/CD>'
+
+idFields:
+  case: '<set by CI/CD>'
+  incident: '<set by CI/CD>'
+  sr: '<set by CI/CD>'
+  memo: '<set by CI/CD>'
+
+clamav:
+  debugMode: '<set by CI/CD>'
+  host: '<set by CI/CD>'
+  port: '<set by CI/CD>'
+  timeout: '<set by CI/CD>'
+  configFile: '<set by CI/CD>'
+  multiScan: '<set by CI/CD>'
+  bypassTest: '<set by CI/CD>'
+
+
+
 

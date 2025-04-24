@@ -7,7 +7,10 @@ import { CacheModule } from '@nestjs/cache-manager';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { LoggerModule } from 'nestjs-pino';
 import { ControllersModule } from './controllers/controllers.module';
+import { ExternalApiModule } from './external-api/external-api.module';
+import { HelpersModule } from './helpers/helpers.module';
 import configuration from './configuration/configuration';
+import { JwtModule } from '@nestjs/jwt';
 
 @Module({
   imports: [
@@ -83,7 +86,10 @@ import configuration from './configuration/configuration';
       }),
     }),
     CacheModule.register({ isGlobal: true }),
+    JwtModule.register({ global: true }),
     ControllersModule,
+    ExternalApiModule,
+    HelpersModule,
   ],
 })
 export class AppModule {}

@@ -24,10 +24,4 @@ spec:
           envFrom:
             - configMapRef:
                 name: wm-config
-          env:
-            - name: NODE_ENV
-              valueFrom:
-                secretKeyRef:
-                    name: wm-api
-                    key: NODE_ENV
       restartPolicy: Always
