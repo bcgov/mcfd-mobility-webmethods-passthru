@@ -12,15 +12,15 @@ export class NotesService {
     private readonly requestPreparerService: RequestPreparerService,
   ) {
     this.getNotesEndpoint = encodeURI(
-      this.configService.get<string>('endpointUrls.baseUrl') +
+      this.configService.get<string>('endpointUrls.workflowUrl') +
         this.configService.get<string>('endpointUrls.getNotes'),
     );
     this.submitNotesKKCFSEndpoint = encodeURI(
-      this.configService.get<string>('endpointUrls.baseUrl') +
+      this.configService.get<string>('endpointUrls.workflowUrl') +
         this.configService.get<string>('endpointUrls.submitNotesKKCFS'),
     );
     this.submitNotesVisitzEndpoint = encodeURI(
-      this.configService.get<string>('endpointUrls.baseUrl') +
+      this.configService.get<string>('endpointUrls.workflowUrl') +
         this.configService.get<string>('endpointUrls.submitNotesVisitz'),
     );
   }
