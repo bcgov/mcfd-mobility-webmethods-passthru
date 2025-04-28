@@ -3,7 +3,7 @@
 ## Operational tasks
 1. Coordinate with project team to decide when to make a new release of the API to production.
 2. Choose a deployment time to release in advance. Due to project team availability, production releases should only be scheduled Monday-Wednesday, during morning hours. This is to accommodate any release issues during working hours, earlier in the week.
-3. If there is a breaking change made to the downstream interface contract of Web Methods Passthru API, release must be coordinated with DIONA team.
+3. If there is a breaking change made to the downstream interface contract of Web Methods Passthru API, release must be coordinated with KKCFS.
 4. If a release will be particularly disruptive, coordinate with project team to communicate with users about the potential disruption.
 5. If there were any highly visible defects at the API level, a general explanation of the fix should be added to the mobile app's release notes for its next version.
 
