@@ -44,7 +44,7 @@ export class UtilitiesService {
       return value;
     } else {
       for (const keyName of Object.keys(object)) {
-        if (typeof object[keyName] === 'object') {
+        if (object[keyName] !== null && typeof object[keyName] === 'object') {
           const found = this.findNestedValue(object[keyName], key);
           if (found) {
             return found;
