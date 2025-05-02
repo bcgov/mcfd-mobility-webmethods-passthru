@@ -33,5 +33,5 @@ Forwarded requests:
 | 621b | Get entity details |
 | 622 | Submit safety assessment |
 | 678 | Get notes |
-| 679c | Submit notes |
+| 679C | Submit notes |
 | 680 | Submit attachment |
