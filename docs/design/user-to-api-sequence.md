@@ -6,8 +6,9 @@ sequenceDiagram
   actor User as User agent
   participant Keycloak as OCIO-SSO
   participant Kong as OCIO-APS
-  participant Api as Passthru API<br/>(OpenShift Silver)
-  participant Up as Webmethod<br/> Integration Broker
+  participant Api as Passthru API
+  participant Up as WebMethods<br/> Integration Broker
+  note over Api: Managed Container Services <br> Private Cloud Silver Tier <br> (MCS-Silver)
 
   User->>Keycloak : Authenticate with PKCE
   Keycloak ->>User: Return JWT tokens
