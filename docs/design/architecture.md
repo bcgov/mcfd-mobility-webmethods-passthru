@@ -9,6 +9,7 @@ flowchart TD
   PassApi[Passthru API<br/>Extra authorization]
   AntiVirus[Antivirus scanner]
   IntBroker[WebMethods Integration Broker]
+  Icm[ICM REST framework]
 
   User --> |Authenticate with PKCE| IdBroker
   User --> |Request with access token| RevProxy
@@ -21,6 +22,7 @@ flowchart TD
   end
 
   PassApi ----> |Forward request| IntBroker
+  PassApi <----> |Authorization check| Icm
 ```
 
 ## Requests
@@ -35,3 +37,7 @@ Forwarded requests:
 | 678 | Get notes |
 | 679C | Submit notes |
 | 680 | Submit attachment |
+
+## Additional information:
+
+- [ICM REST framework](https://dev.azure.com/bc-icm/SiebelCRM%20Lab/_wiki/wikis/SiebelCRM-Lab.wiki/575/Siebel-Application-Client-ID-(Service-Account)-Operation-for-DATA-API)
