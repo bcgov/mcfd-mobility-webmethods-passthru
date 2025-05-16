@@ -7,7 +7,7 @@ image:
  
 service:
   type: ClusterIP
-  port: 80
+  port: 443
   containerPort: 3200
  
 resources: {}
@@ -81,7 +81,4 @@ clamav:
   configFile: '<set by CI/CD>'
   multiScan: '<set by CI/CD>'
   bypassTest: '<set by CI/CD>'
-
-
-
 
