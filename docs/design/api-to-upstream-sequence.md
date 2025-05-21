@@ -4,10 +4,11 @@ title: WebMethods Passthru API to upstream
 ---
 sequenceDiagram
   participant Down as Downstream<br/>(OCIO-APS)
-  participant Api as Passthru API<br/>(OpenShift Silver)
-  participant Clam as ClamAV
+  participant Api as Passthru API
+  participant Clam as Antivirus Scanner
   participant Icm as ICM REST framework
   participant Webm as WebMethods<br/>Integration Broker
+  note over Api,Clam: Managed Container Services <br> Private Cloud Silver Tier <br> (MCS-Silver)
 
   Down->>Api: Forward request
 
@@ -38,6 +39,6 @@ sequenceDiagram
   Api->>Down: Forward response
 ```
 
-Additional information:
+## Additional information:
 
 - [ICM REST framework](https://dev.azure.com/bc-icm/SiebelCRM%20Lab/_wiki/wikis/SiebelCRM-Lab.wiki/575/Siebel-Application-Client-ID-(Service-Account)-Operation-for-DATA-API)
