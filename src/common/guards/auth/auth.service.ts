@@ -61,8 +61,8 @@ export class AuthService {
     let idir: string;
     try {
       idir = req.header(idirUsernameHeader).trim();
-    } catch (error: any) {
-      this.logger.error({ error });
+    } catch {
+      this.logger.error(`Idir username not found`);
       return false;
     }
     if (!isCaseload) {
@@ -89,10 +89,16 @@ export class AuthService {
       this.logger.error({ error });
       return false;
     }
-    const [entityType, entityNumber] = this.findEntityInfo(
-      JSON.parse(req.body.docRequest),
-    );
+    let entityInfo;
+    try {
+      entityInfo = JSON.parse(req.body.docRequest);
+    } catch {
+      this.logger.error(`Could not parse docRequest JSON`);
+      return false;
+    }
+    const [entityType, entityNumber] = this.findEntityInfo(entityInfo);
     if (entityType === undefined || entityNumber === undefined) {
+      this.logger.error(`Entity Type or Number not found`);
       return false;
     }
     const recordType = EntityRecordMap[entityType];
@@ -150,33 +156,41 @@ export class AuthService {
   }
 
   findEntityInfo(body: object): [EntityType, string] {
-    const entityNumber = this.utilitiesService.findNestedValue(
-      body,
-      'entityNumber',
-    );
-    if (entityNumber !== undefined) {
+    try {
+      const entityNumber = this.utilitiesService.findNestedValue(
+        body,
+        'entityNumber',
+      );
+      if (entityNumber !== undefined) {
+        return [
+          this.utilitiesService.findNestedValue(
+            body,
+            'entityType',
+          ) as EntityType,
+          entityNumber,
+        ];
+      }
+
+      const incidentNumber = this.utilitiesService.findNestedValue(
+        body,
+        'incidentNumber',
+      );
+      if (incidentNumber !== undefined) {
+        return [EntityType.Incident, incidentNumber];
+      }
+
+      const caseIncidentNumber = this.utilitiesService.findNestedValue(
+        body,
+        'caseIncidentNumber',
+      );
       return [
         this.utilitiesService.findNestedValue(body, 'entityType') as EntityType,
-        entityNumber,
+        caseIncidentNumber,
       ];
+    } catch (error: any) {
+      this.logger.error({ error });
+      return [undefined, undefined];
     }
-
-    const incidentNumber = this.utilitiesService.findNestedValue(
-      body,
-      'incidentNumber',
-    );
-    if (incidentNumber !== undefined) {
-      return [EntityType.Incident, incidentNumber];
-    }
-
-    const caseIncidentNumber = this.utilitiesService.findNestedValue(
-      body,
-      'caseIncidentNumber',
-    );
-    return [
-      this.utilitiesService.findNestedValue(body, 'entityType') as EntityType,
-      caseIncidentNumber,
-    ];
   }
 
   async evaluateUpstreamResult(
