@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { Request } from 'express';
@@ -7,6 +7,7 @@ import { RecordType } from '../../common/constants/enumerations';
 @Injectable()
 export class UtilitiesService {
   skipJWT: boolean;
+  private readonly logger = new Logger(UtilitiesService.name);
 
   constructor(
     private readonly configService: ConfigService,
@@ -20,12 +21,14 @@ export class UtilitiesService {
       return 'local'; // we won't have a JWT locally
     }
     const authToken = req.header('authorization').split(/\s+/)[1];
-    const decoded = this.jwtService.decode(authToken);
     try {
+      const decoded = this.jwtService.decode(authToken);
       const jti = decoded['jti'];
       return jti;
     } catch {
-      throw new Error(`Invalid JWT`);
+      const error = `Invalid JWT`;
+      this.logger.error(error);
+      throw new Error(error);
     }
   }
 
