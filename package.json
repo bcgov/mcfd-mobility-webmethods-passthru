@@ -33,7 +33,7 @@
     "clamscan": "^2.4.0",
     "file-type": "^20.4.1",
     "load-esm": "^1.0.2",
-    "multer": "^2.0.0",
+    "multer": "^2.0.1",
     "nestjs-pino": "^4.4.0",
     "pino-http": "^10.4.0",
     "pino-std-serializers": "^7.0.0",
