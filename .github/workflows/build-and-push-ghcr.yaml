@@ -76,48 +76,7 @@ jobs:
               "image.tag": "${{ github.ref_name }}",
               "wmAppBuildLabel.version": "${{ github.ref_name }}-${{ github.run_number }}",
               "wmAppEnv": "${{ vars.WM_APP_ENV }}",
-              "aps.namespace": "${{ secrets.APS_NAMESPACE }}",
-              "auth": "${{ secrets.AUTH_STRING }}",
-              "endpoints.submitAttachment": "${{ secrets.SUBMIT_ATTACHMENT_ENDPOINT }}",
-              "endpoints.caseload": "${{ secrets.CASELOAD_ENDPOINT }}",
-              "endpoints.entityDetails": "${{ secrets.ENTITY_DETAILS_ENDPOINT }}",
-              "endpoints.getNotes": "${{ secrets.GET_NOTES_ENDPOINT }}",
-              "endpoints.submitNotesKKCFS": "${{ secrets.SUBMIT_NOTES_KKCFS_ENDPOINT }}",
-              "endpoints.submitNotesVisitz": "${{ secrets.SUBMIT_NOTES_VISITZ_ENDPOINT }}",
-              "endpoints.submitSafetyAssessment": "${{ secrets.SUBMIT_SAFETY_ASSESSMENT_ENDPOINT }}",
-              "workflowApiUrl": "${{ secrets.WORKFLOW_API_URL }}",
-              "clientId": "${{ secrets.CLIENT_ID }}",
-              "clientSecret": "${{ secrets.CLIENT_SECRET }}",
-              "dataApiUrl": "${{ secrets.DATA_API_URL }}",
-              "accessTokenUrl": "${{ secrets.ACCESS_TOKEN_URL }}",
-              "recordCacheMs": "${{ secrets.RECORD_CACHE_MS }}",
-              "endpoints.case": "${{ secrets.CASE_ENDPOINT }}",
-              "endpoints.incident": "${{ secrets.INCIDENT_ENDPOINT }}",
-              "endpoints.sr": "${{ secrets.SR_ENDPOINT }}",
-              "endpoints.memo": "${{ secrets.MEMO_ENDPOINT }}",
-              "endpoints.employee": "${{ secrets.EMPLOYEE_ENDPOINT }}",
-              "searchspecs.case": "${{ secrets.CASE_SEARCHSPEC_IDIR_FIELD }}",
-              "searchspecs.incident": "${{ secrets.INCIDENT_SEARCHSPEC_IDIR_FIELD }}",
-              "searchspecs.sr": "${{ secrets.SR_SEARCHSPEC_IDIR_FIELD }}",
-              "searchspecs.memo": "${{ secrets.MEMO_SEARCHSPEC_IDIR_FIELD }}",
-              "workspaces.case": "${{ secrets.CASE_WORKSPACE }}",
-              "workspaces.incident": "${{ secrets.INCIDENT_WORKSPACE }}",
-              "workspaces.sr": "${{ secrets.SR_WORKSPACE }}",
-              "workspaces.memo": "${{ secrets.MEMO_WORKSPACE }}",
-              "workspaces.employee": "${{ secrets.EMPLOYEE_WORKSPACE }}",
-              "idFields.case": "${{ secrets.CASE_ID_FIELDNAME }}",
-              "idFields.incident": "${{ secrets.INCIDENT_ID_FIELDNAME }}",
-              "idFields.sr": "${{ secrets.SR_ID_FIELDNAME }}",
-              "idFields.memo": "${{ secrets.MEMO_ID_FIELDNAME }}",
-              "bodyLimit": "${{ secrets.BODY_SIZE_LIMIT }}",
-              "maxFileSizeBytes": "${{ secrets.MAX_FILE_SIZE_BYTES }}",
-              "clamav.debugMode": "${{ secrets.CLAM_DEBUG_MODE }}",
-              "clamav.host": "${{ secrets.CLAMD_HOST }}",
-              "clamav.port": "${{ secrets.CLAMD_PORT }}",
-              "clamav.timeout": "${{ secrets.CLAMD_TIMEOUT }}",
-              "clamav.configFile": "${{ secrets.CLAMD_CONFIG_FILE }}",
-              "clamav.multiScan": "${{ secrets.CLAMD_MULTI_SCAN }}",
-              "clamav.bypassTest": "${{ secrets.CLAMD_BYPASS_TEST }}"
+              "aps.namespace": "${{ secrets.APS_NAMESPACE }}"
             }
           commitChange: false
 
@@ -131,7 +90,8 @@ jobs:
 
       - name: Deploy with Helm
         run: |
-          helm upgrade --install ${{ env.HELM_RELEASE_NAME }} ./helm \
+          helm upgrade -f helm/wm-config-values.yaml -f helm/values.yaml \
+            --install ${{ env.HELM_RELEASE_NAME }} ./helm \
             --namespace ${{ secrets.OPENSHIFT_NAMESPACE }} \
             --set image.repository=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }} \
             --set image.tag=${{ needs.build_and_push.outputs.image_tag }}
