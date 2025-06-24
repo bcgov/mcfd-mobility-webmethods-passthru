@@ -4,6 +4,12 @@ import { HttpService } from '@nestjs/axios';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import configuration from '../../configuration/configuration';
 import { RequestPreparerService } from '../../external-api/request-preparer/request-preparer.service';
+import { CACHE_MANAGER } from '@nestjs/cache-manager';
+import { JwtService } from '@nestjs/jwt';
+import { TokenRefresherService } from '../../external-api/token-refresher/token-refresher.service';
+import { SubmissionFilterService } from '../../helpers/submission-filter/submission-filter.service';
+import { UtilitiesService } from '../../helpers/utilities/utilities.service';
+import { idirUsernameHeader } from '../../common/constants/parameter-constants';
 
 describe('SafetyAssessmentsService', () => {
   let service: SafetyAssessmentsService;
@@ -14,7 +20,21 @@ describe('SafetyAssessmentsService', () => {
       imports: [ConfigModule.forRoot({ load: [configuration] })],
       providers: [
         SafetyAssessmentsService,
-        { provide: HttpService, useValue: { post: jest.fn() } },
+        SubmissionFilterService,
+        UtilitiesService,
+        TokenRefresherService,
+        JwtService,
+        {
+          provide: HttpService,
+          useValue: { post: () => jest.fn(), get: () => jest.fn() },
+        },
+        {
+          provide: CACHE_MANAGER,
+          useValue: {
+            set: () => jest.fn(),
+            get: () => 'Bearer token',
+          },
+        },
         ConfigService,
         RequestPreparerService,
       ],
@@ -36,8 +56,13 @@ describe('SafetyAssessmentsService', () => {
       const requestSpy = jest
         .spyOn(requestPreparerService, 'sendPostRequest')
         .mockResolvedValueOnce(mockResult);
-      const body = { body: 'here' };
-      const headers = { headers: 'headers' };
+      const getRequestSpy = jest
+        .spyOn(requestPreparerService, 'sendGetRequest')
+        .mockResolvedValueOnce(mockResult);
+      const body = {
+        docRequest: JSON.stringify({ incidentNumber: 'numberhere' }),
+      };
+      const headers = { [idirUsernameHeader.toLowerCase()]: 'idir' };
 
       const result = await service.submitSafetyAssessment(body, headers);
       expect(requestSpy).toHaveBeenCalledWith(
@@ -45,6 +70,7 @@ describe('SafetyAssessmentsService', () => {
         body,
         headers,
       );
+      expect(getRequestSpy).toHaveBeenCalledTimes(1);
       expect(result).toEqual(mockResult);
     });
   });

@@ -4,6 +4,9 @@ import { HttpService } from '@nestjs/axios';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import configuration from '../../configuration/configuration';
 import { RequestPreparerService } from '../../external-api/request-preparer/request-preparer.service';
+import { TokenRefresherService } from '../../external-api/token-refresher/token-refresher.service';
+import { JwtService } from '@nestjs/jwt';
+import { CACHE_MANAGER } from '@nestjs/cache-manager';
 
 describe('EntitiesService', () => {
   let service: EntitiesService;
@@ -18,9 +21,21 @@ describe('EntitiesService', () => {
       imports: [ConfigModule.forRoot({ load: [configuration] })],
       providers: [
         EntitiesService,
-        { provide: HttpService, useValue: { post: jest.fn() } },
         ConfigService,
         RequestPreparerService,
+        TokenRefresherService,
+        JwtService,
+        {
+          provide: HttpService,
+          useValue: { post: () => jest.fn(), get: () => jest.fn() },
+        },
+        {
+          provide: CACHE_MANAGER,
+          useValue: {
+            set: () => jest.fn(),
+            get: () => 'Bearer token',
+          },
+        },
       ],
     }).compile();
 

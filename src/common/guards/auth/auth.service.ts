@@ -2,7 +2,6 @@ import { Inject, Injectable, Logger } from '@nestjs/common';
 import { Request } from 'express';
 import {
   EntityRecordMap,
-  EntityType,
   RecordType,
 } from '../../../common/constants/enumerations';
 import { CACHE_MANAGER } from '@nestjs/cache-manager';
@@ -96,7 +95,8 @@ export class AuthService {
       this.logger.error(`Could not parse docRequest JSON`);
       return false;
     }
-    const [entityType, entityNumber] = this.findEntityInfo(entityInfo);
+    const [entityType, entityNumber] =
+      this.utilitiesService.findEntityInfo(entityInfo);
     if (entityType === undefined || entityNumber === undefined) {
       this.logger.error(`Entity Type or Number not found`);
       return false;
@@ -155,44 +155,6 @@ export class AuthService {
       return false;
     }
     return true;
-  }
-
-  findEntityInfo(body: object): [EntityType, string] {
-    try {
-      const entityNumber = this.utilitiesService.findNestedValue(
-        body,
-        'entityNumber',
-      );
-      if (entityNumber !== undefined) {
-        return [
-          this.utilitiesService.findNestedValue(
-            body,
-            'entityType',
-          ) as EntityType,
-          entityNumber,
-        ];
-      }
-
-      const incidentNumber = this.utilitiesService.findNestedValue(
-        body,
-        'incidentNumber',
-      );
-      if (incidentNumber !== undefined) {
-        return [EntityType.Incident, incidentNumber];
-      }
-
-      const caseIncidentNumber = this.utilitiesService.findNestedValue(
-        body,
-        'caseIncidentNumber',
-      );
-      return [
-        this.utilitiesService.findNestedValue(body, 'entityType') as EntityType,
-        caseIncidentNumber,
-      ];
-    } catch (error: any) {
-      this.logger.error({ error });
-      return [undefined, undefined];
-    }
   }
 
   async evaluateUpstreamResult(

@@ -4,6 +4,7 @@ import { ConfigService } from '@nestjs/config';
 import { FileUploadService } from '../../helpers/file-upload/file-upload.service';
 import { UtilitiesService } from '../../helpers/utilities/utilities.service';
 import { VirusScanService } from '../../helpers/virus-scan/virus-scan.service';
+import { SubmissionFilterService } from '../../helpers/submission-filter/submission-filter.service';
 
 @Injectable()
 export class AttachmentsService {
@@ -14,6 +15,7 @@ export class AttachmentsService {
     private readonly utilitiesService: UtilitiesService,
     private readonly fileUploadService: FileUploadService,
     private readonly virusScanService: VirusScanService,
+    private readonly submissionFilterService: SubmissionFilterService,
   ) {
     this.submitEndpoint = encodeURI(
       this.configService.get<string>('endpointUrls.workflowUrl') +
@@ -22,6 +24,7 @@ export class AttachmentsService {
   }
 
   async submitAttachment(body, headers) {
+    await this.submissionFilterService.isEligibleForSubmission(body, headers);
     const reqField = JSON.parse(body.docRequest);
     const fileString =
       reqField.requestFormAttachment.payLoad.attachment.PDFString;

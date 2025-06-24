@@ -6,12 +6,13 @@ import configuration from '../../configuration/configuration';
 import { RequestPreparerService } from '../../external-api/request-preparer/request-preparer.service';
 import { AttachmentsService } from './attachments.service';
 import { CACHE_MANAGER } from '@nestjs/cache-manager';
-import { JwtModule } from '@nestjs/jwt';
+import { JwtModule, JwtService } from '@nestjs/jwt';
 import { AuthService } from '../../common/guards/auth/auth.service';
 import { TokenRefresherService } from '../../external-api/token-refresher/token-refresher.service';
 import { UtilitiesService } from '../../helpers/utilities/utilities.service';
 import { FileUploadService } from '../../helpers/file-upload/file-upload.service';
 import { VirusScanService } from '../../helpers/virus-scan/virus-scan.service';
+import { SubmissionFilterService } from '../../helpers/submission-filter/submission-filter.service';
 
 describe('AttachmentsController', () => {
   let controller: AttachmentsController;
@@ -25,11 +26,22 @@ describe('AttachmentsController', () => {
       ],
       providers: [
         TokenRefresherService,
-        { provide: CACHE_MANAGER, useValue: {} },
         UtilitiesService,
         AuthService,
         AttachmentsService,
-        { provide: HttpService, useValue: { post: jest.fn() } },
+        SubmissionFilterService,
+        JwtService,
+        {
+          provide: HttpService,
+          useValue: { post: () => jest.fn(), get: () => jest.fn() },
+        },
+        {
+          provide: CACHE_MANAGER,
+          useValue: {
+            set: () => jest.fn(),
+            get: () => 'Bearer token',
+          },
+        },
         ConfigService,
         RequestPreparerService,
         UtilitiesService,

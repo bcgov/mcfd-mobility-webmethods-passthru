@@ -15,6 +15,8 @@ export default () => ({
       workspace: process.env.CASE_WORKSPACE ?? undefined,
       searchspecIdirField: process.env.CASE_SEARCHSPEC_IDIR_FIELD ?? undefined,
       idField: process.env.CASE_ID_FIELDNAME ?? undefined,
+      restrictedField: process.env.CASE_RESTRICTED_FIELD ?? undefined,
+      statusField: process.env.CASE_STATUS_FIELD ?? undefined,
     },
     incident: {
       endpoint: encodeURI((process.env.INCIDENT_ENDPOINT ?? ' ').trim()),
@@ -22,18 +24,24 @@ export default () => ({
       searchspecIdirField:
         process.env.INCIDENT_SEARCHSPEC_IDIR_FIELD ?? undefined,
       idField: process.env.INCIDENT_ID_FIELDNAME ?? undefined,
+      restrictedField: process.env.INCIDENT_RESTRICTED_FIELD ?? undefined,
+      statusField: process.env.INCIDENT_STATUS_FIELD ?? undefined,
     },
     sr: {
       endpoint: encodeURI((process.env.SR_ENDPOINT ?? ' ').trim()),
       workspace: process.env.SR_WORKSPACE ?? undefined,
       searchspecIdirField: process.env.SR_SEARCHSPEC_IDIR_FIELD ?? undefined,
       idField: process.env.SR_ID_FIELDNAME ?? undefined,
+      restrictedField: process.env.SR_RESTRICTED_FIELD ?? undefined,
+      statusField: process.env.SR_STATUS_FIELD ?? undefined,
     },
     memo: {
       endpoint: encodeURI((process.env.MEMO_ENDPOINT ?? ' ').trim()),
       workspace: process.env.MEMO_WORKSPACE ?? undefined,
       searchspecIdirField: process.env.MEMO_SEARCHSPEC_IDIR_FIELD ?? undefined,
       idField: process.env.MEMO_ID_FIELDNAME ?? undefined,
+      restrictedField: process.env.MEMO_RESTRICTED_FIELD ?? undefined,
+      statusField: process.env.MEMO_STATUS_FIELD ?? undefined,
     },
     employee: {
       endpoint: encodeURI((process.env.EMPLOYEE_ENDPOINT ?? ' ').trim()),
