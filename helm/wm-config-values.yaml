@@ -224,3 +224,43 @@ env:
       secretKeyRef:
           name: mutual-authentication-mtls
           key: SERVER_KEY
+  - name: CASE_RESTRICTED_FIELD
+    valueFrom:
+      configMapKeyRef:
+          name: wm-config
+          key: CASE_RESTRICTED_FIELD
+  - name: CASE_STATUS_FIELD
+    valueFrom:
+      configMapKeyRef:
+          name: wm-config
+          key: CASE_STATUS_FIELD
+  - name: INCIDENT_RESTRICTED_FIELD
+    valueFrom:
+      configMapKeyRef:
+          name: wm-config
+          key: INCIDENT_RESTRICTED_FIELD
+  - name: INCIDENT_STATUS_FIELD
+    valueFrom:
+      configMapKeyRef:
+          name: wm-config
+          key: INCIDENT_STATUS_FIELD
+  - name: SR_RESTRICTED_FIELD
+    valueFrom:
+      configMapKeyRef:
+          name: wm-config
+          key: SR_RESTRICTED_FIELD
+  - name: SR_STATUS_FIELD
+    valueFrom:
+      configMapKeyRef:
+          name: wm-config
+          key: SR_STATUS_FIELD
+  - name: MEMO_RESTRICTED_FIELD
+    valueFrom:
+      configMapKeyRef:
+          name: wm-config
+          key: MEMO_RESTRICTED_FIELD
+  - name: MEMO_STATUS_FIELD
+    valueFrom:
+      configMapKeyRef:
+          name: wm-config
+          key: MEMO_STATUS_FIELD
