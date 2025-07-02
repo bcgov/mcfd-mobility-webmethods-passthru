@@ -384,7 +384,7 @@ describe('AuthService', () => {
       'should return false if entityNumber or type is undefined',
       async (entityType, entityNumber) => {
         const entityInfoSpy = jest
-          .spyOn(service, 'findEntityInfo')
+          .spyOn(utilitiesService, 'findEntityInfo')
           .mockReturnValueOnce([entityType, entityNumber]);
         const mockRequest = getMockReq({
           header: jest.fn((key: string): string => {

@@ -19,4 +19,20 @@ const EntityRecordMap = {
   [EntityType.Memo]: RecordType.Memo,
 } as const;
 
-export { RecordType, EntityType, EntityRecordMap };
+enum RestrictedRecordEnum {
+  True = 'Y',
+  False = 'N',
+}
+
+enum EntityStatus {
+  Open = 'Open',
+  // We only want to show open cases
+}
+
+export {
+  RecordType,
+  EntityType,
+  EntityRecordMap,
+  RestrictedRecordEnum,
+  EntityStatus,
+};

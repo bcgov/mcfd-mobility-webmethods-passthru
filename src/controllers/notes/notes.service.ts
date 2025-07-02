@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { RequestPreparerService } from '../../external-api/request-preparer/request-preparer.service';
+import { SubmissionFilterService } from '../../helpers/submission-filter/submission-filter.service';
 
 @Injectable()
 export class NotesService {
@@ -10,6 +11,7 @@ export class NotesService {
   constructor(
     private readonly configService: ConfigService,
     private readonly requestPreparerService: RequestPreparerService,
+    private readonly submissionFilterService: SubmissionFilterService,
   ) {
     this.getNotesEndpoint = encodeURI(
       this.configService.get<string>('endpointUrls.workflowUrl') +
@@ -34,6 +36,7 @@ export class NotesService {
   }
 
   async submitNotesKKCFS(body, headers) {
+    await this.submissionFilterService.isEligibleForSubmission(body, headers);
     return await this.requestPreparerService.sendPostRequest(
       this.submitNotesKKCFSEndpoint,
       body,
@@ -42,6 +45,7 @@ export class NotesService {
   }
 
   async submitNotesVisitz(body, headers) {
+    await this.submissionFilterService.isEligibleForSubmission(body, headers);
     return await this.requestPreparerService.sendPostRequest(
       this.submitNotesVisitzEndpoint,
       body,

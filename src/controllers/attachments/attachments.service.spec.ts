@@ -7,8 +7,13 @@ import { RequestPreparerService } from '../../external-api/request-preparer/requ
 import { UtilitiesService } from '../../helpers/utilities/utilities.service';
 import { FileUploadService } from '../../helpers/file-upload/file-upload.service';
 import { VirusScanService } from '../../helpers/virus-scan/virus-scan.service';
-import { JwtModule } from '@nestjs/jwt';
+import { JwtModule, JwtService } from '@nestjs/jwt';
 import { base64FileString } from '../../common/constants/test-constants';
+import { CACHE_MANAGER } from '@nestjs/cache-manager';
+import { TokenRefresherService } from '../../external-api/token-refresher/token-refresher.service';
+import { SubmissionFilterService } from '../../helpers/submission-filter/submission-filter.service';
+import { idirUsernameHeader } from '../../common/constants/parameter-constants';
+import { EntityType } from '../../common/constants/enumerations';
 
 describe('AttachmentsService', () => {
   let service: AttachmentsService;
@@ -24,7 +29,20 @@ describe('AttachmentsService', () => {
       ],
       providers: [
         AttachmentsService,
-        { provide: HttpService, useValue: { post: jest.fn() } },
+        SubmissionFilterService,
+        TokenRefresherService,
+        JwtService,
+        {
+          provide: HttpService,
+          useValue: { post: () => jest.fn(), get: () => jest.fn() },
+        },
+        {
+          provide: CACHE_MANAGER,
+          useValue: {
+            set: () => jest.fn(),
+            get: () => 'Bearer token',
+          },
+        },
         ConfigService,
         RequestPreparerService,
         UtilitiesService,
@@ -51,10 +69,13 @@ describe('AttachmentsService', () => {
       const requestSpy = jest
         .spyOn(requestPreparerService, 'sendPostRequest')
         .mockResolvedValueOnce(mockResult);
+      const getRequestSpy = jest
+        .spyOn(requestPreparerService, 'sendGetRequest')
+        .mockResolvedValueOnce(mockResult);
       const body = {
-        docRequest: `{"requestFormAttachment":{ "payLoad": { "attachment": {"PDFString":"${base64FileString}"}}}, "fileName":"filename"}`,
+        docRequest: `{"entityNumber": "numberhere", "entityType": "${EntityType.Case}","requestFormAttachment":{ "payLoad": { "attachment": {"PDFString":"${base64FileString}"}}}, "fileName":"filename"}`,
       };
-      const headers = { headers: 'headers' };
+      const headers = { [idirUsernameHeader.toLowerCase()]: 'idir' };
 
       const fileUploadSpy = jest
         .spyOn(fileUploadService, 'fileBufferAndTypeCheck')
@@ -73,6 +94,7 @@ describe('AttachmentsService', () => {
       );
       expect(fileUploadSpy).toHaveBeenCalledTimes(1);
       expect(virusScanSpy).toHaveBeenCalledTimes(1);
+      expect(getRequestSpy).toHaveBeenCalledTimes(1);
       expect(result).toEqual(mockResult);
     });
   });

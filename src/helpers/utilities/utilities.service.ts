@@ -2,7 +2,7 @@ import { Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { Request } from 'express';
-import { RecordType } from '../../common/constants/enumerations';
+import { EntityType, RecordType } from '../../common/constants/enumerations';
 
 @Injectable()
 export class UtilitiesService {
@@ -54,6 +54,35 @@ export class UtilitiesService {
           }
         }
       }
+    }
+  }
+
+  findEntityInfo(body: object): [EntityType, string] {
+    try {
+      const entityNumber = this.findNestedValue(body, 'entityNumber');
+      if (entityNumber !== undefined) {
+        return [
+          this.findNestedValue(body, 'entityType') as EntityType,
+          entityNumber,
+        ];
+      }
+
+      const incidentNumber = this.findNestedValue(body, 'incidentNumber');
+      if (incidentNumber !== undefined) {
+        return [EntityType.Incident, incidentNumber];
+      }
+
+      const caseIncidentNumber = this.findNestedValue(
+        body,
+        'caseIncidentNumber',
+      );
+      return [
+        this.findNestedValue(body, 'entityType') as EntityType,
+        caseIncidentNumber,
+      ];
+    } catch (error: any) {
+      this.logger.error({ error });
+      return [undefined, undefined];
     }
   }
 }

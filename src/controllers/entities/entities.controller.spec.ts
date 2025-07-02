@@ -6,10 +6,11 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import configuration from '../../configuration/configuration';
 import { RequestPreparerService } from '../../external-api/request-preparer/request-preparer.service';
 import { CACHE_MANAGER } from '@nestjs/cache-manager';
-import { JwtModule } from '@nestjs/jwt';
+import { JwtModule, JwtService } from '@nestjs/jwt';
 import { AuthService } from '../../common/guards/auth/auth.service';
 import { TokenRefresherService } from '../../external-api/token-refresher/token-refresher.service';
 import { UtilitiesService } from '../../helpers/utilities/utilities.service';
+import { SubmissionFilterService } from '../../helpers/submission-filter/submission-filter.service';
 
 describe('EntitiesController', () => {
   let controller: EntitiesController;
@@ -27,11 +28,22 @@ describe('EntitiesController', () => {
       ],
       providers: [
         TokenRefresherService,
-        { provide: CACHE_MANAGER, useValue: {} },
+        SubmissionFilterService,
+        JwtService,
+        {
+          provide: HttpService,
+          useValue: { post: () => jest.fn(), get: () => jest.fn() },
+        },
+        {
+          provide: CACHE_MANAGER,
+          useValue: {
+            set: () => jest.fn(),
+            get: () => 'Bearer token',
+          },
+        },
         UtilitiesService,
         AuthService,
         EntitiesService,
-        { provide: HttpService, useValue: { post: jest.fn() } },
         ConfigService,
         RequestPreparerService,
       ],
