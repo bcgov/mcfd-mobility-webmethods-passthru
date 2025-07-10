@@ -287,5 +287,5 @@ env:
   - name: RESTRICT_TO_ORG
     valueFrom:
       configMapKeyRef:
-          name: wm-api-config
+          name: wm-config
           key: RESTRICT_TO_ORG
