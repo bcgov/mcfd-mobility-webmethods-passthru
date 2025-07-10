@@ -275,7 +275,8 @@ export class AuthService {
         officeNames.push(position['Division']);
       }
     }
-    const officeNamesString = officeNames.join(officeNamesSeparator);
+    const officeNamesSorted = officeNames.sort();
+    const officeNamesString = officeNamesSorted.join(officeNamesSeparator);
     await this.cacheManager.set(
       officeNamesKey,
       officeNamesString,
