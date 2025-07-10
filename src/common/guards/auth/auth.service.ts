@@ -268,6 +268,12 @@ export class AuthService {
         await this.cacheManager.set(idir, false, this.cacheTime);
         return [false, null];
       }
+    } else {
+      for (const position of response.data['items'][0][
+        queryHierarchyEmployeeChildClassName
+      ]) {
+        officeNames.push(position['Division']);
+      }
     }
     const officeNamesString = officeNames.join(officeNamesSeparator);
     await this.cacheManager.set(
