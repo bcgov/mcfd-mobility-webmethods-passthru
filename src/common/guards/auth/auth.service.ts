@@ -3,6 +3,7 @@ import { Request } from 'express';
 import {
   EntityRecordMap,
   RecordType,
+  RestrictedRecordEnum,
 } from '../../../common/constants/enumerations';
 import { CACHE_MANAGER } from '@nestjs/cache-manager';
 import { Cache } from 'cache-manager';
@@ -302,6 +303,9 @@ export class AuthService {
     const officeFieldName = this.configService.get<string>(
       `auth.${recordType}.officeField`,
     );
+    const restrictedFieldName = this.configService.get<string>(
+      `auth.${recordType}.restrictedField`,
+    );
     let searchspec =
       `([${idFieldName}]='${id}') AND (` +
       this.utilitiesService.officeNamesStringToSearchSpec(
@@ -312,7 +316,9 @@ export class AuthService {
     if (recordType === RecordType.Case || recordType == RecordType.Incident) {
       searchspec = searchspec + `EXISTS `;
     }
-    searchspec = searchspec + `([${idirFieldName}]='${idir}'))`;
+    searchspec =
+      searchspec +
+      `([${idirFieldName}]='${idir}') AND ([${restrictedFieldName}]='${RestrictedRecordEnum.False}'))`;
     const params = {
       ViewMode: VIEW_MODE,
       ChildLinks: CHILD_LINKS,
