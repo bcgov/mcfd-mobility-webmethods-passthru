@@ -144,11 +144,6 @@ env:
       configMapKeyRef:
           name: wm-config
           key: MAX_FILE_SIZE_BYTES
-  - name: BODY_SIZE_LIMIT
-    valueFrom:
-    configMapKeyRef:
-        name: wm-config
-        key: BODY_SIZE_LIMIT
   - name: CLAM_DEBUG_MODE
     valueFrom:
       configMapKeyRef:
@@ -289,3 +284,8 @@ env:
       configMapKeyRef:
           name: wm-config
           key: RESTRICT_TO_ORG
+  - name: BODY_SIZE_LIMIT
+    valueFrom:
+      configMapKeyRef:
+        name: wm-config
+        key: BODY_SIZE_LIMIT
