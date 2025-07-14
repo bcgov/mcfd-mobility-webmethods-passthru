@@ -494,12 +494,12 @@ describe('AuthService', () => {
       [
         validId,
         validRecordType,
-        `([undefined]='id1234') AND (([undefined]='office1' OR [undefined]='office2') OR EXISTS ([testfield]='IDIRTEST'))`,
+        `([undefined]='id1234') AND (([undefined]='office1' OR [undefined]='office2') OR EXISTS ([testfield]='IDIRTEST') AND ([undefined]='N'))`,
       ],
       [
         validId,
         RecordType.Memo,
-        `([undefined]='id1234') AND (([undefined]='office1' OR [undefined]='office2') OR ([undefined]='IDIRTEST'))`,
+        `([undefined]='id1234') AND (([undefined]='office1' OR [undefined]='office2') OR ([undefined]='IDIRTEST') AND ([undefined]='N'))`,
       ],
     ])(
       'should return idir string given good input',
