@@ -17,6 +17,7 @@ export default () => ({
       idField: process.env.CASE_ID_FIELDNAME ?? undefined,
       restrictedField: process.env.CASE_RESTRICTED_FIELD ?? undefined,
       statusField: process.env.CASE_STATUS_FIELD ?? undefined,
+      officeField: process.env.CASE_OFFICE_FIELD ?? undefined,
     },
     incident: {
       endpoint: encodeURI((process.env.INCIDENT_ENDPOINT ?? ' ').trim()),
@@ -26,6 +27,7 @@ export default () => ({
       idField: process.env.INCIDENT_ID_FIELDNAME ?? undefined,
       restrictedField: process.env.INCIDENT_RESTRICTED_FIELD ?? undefined,
       statusField: process.env.INCIDENT_STATUS_FIELD ?? undefined,
+      officeField: process.env.INCIDENT_OFFICE_FIELD ?? undefined,
     },
     sr: {
       endpoint: encodeURI((process.env.SR_ENDPOINT ?? ' ').trim()),
@@ -34,6 +36,7 @@ export default () => ({
       idField: process.env.SR_ID_FIELDNAME ?? undefined,
       restrictedField: process.env.SR_RESTRICTED_FIELD ?? undefined,
       statusField: process.env.SR_STATUS_FIELD ?? undefined,
+      officeField: process.env.SR_OFFICE_FIELD ?? undefined,
     },
     memo: {
       endpoint: encodeURI((process.env.MEMO_ENDPOINT ?? ' ').trim()),
@@ -42,10 +45,21 @@ export default () => ({
       idField: process.env.MEMO_ID_FIELDNAME ?? undefined,
       restrictedField: process.env.MEMO_RESTRICTED_FIELD ?? undefined,
       statusField: process.env.MEMO_STATUS_FIELD ?? undefined,
+      officeField: process.env.MEMO_OFFICE_FIELD ?? undefined,
     },
     employee: {
       endpoint: encodeURI((process.env.EMPLOYEE_ENDPOINT ?? ' ').trim()),
       workspace: process.env.EMPLOYEE_WORKSPACE ?? undefined,
+      restrictToOrg: (() => {
+        if (typeof process.env.RESTRICT_TO_ORG === 'string') {
+          const trimmedInput = process.env.RESTRICT_TO_ORG.trim();
+          if (trimmedInput === '') {
+            return undefined;
+          }
+          return trimmedInput;
+        }
+        return undefined;
+      })(),
     },
   },
   oauth: {

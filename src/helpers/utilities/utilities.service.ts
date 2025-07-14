@@ -3,6 +3,8 @@ import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { Request } from 'express';
 import { EntityType, RecordType } from '../../common/constants/enumerations';
+import { officeNamesSeparator } from '../../common/constants/parameter-constants';
+import { QueryHierarchyComponent } from '../../dto/query-hierarchy-component.dto';
 
 @Injectable()
 export class UtilitiesService {
@@ -84,5 +86,50 @@ export class UtilitiesService {
       this.logger.error({ error });
       return [undefined, undefined];
     }
+  }
+
+  officeNamesCacheKeyPreparer(idir: string): string {
+    return `${idir}|OfficeNames`;
+  }
+
+  officeNamesStringToSearchSpec(
+    officeNames: string,
+    officeFieldName: string,
+  ): string {
+    let searchspec = `(`;
+    const officeNamesArray: Array<string> =
+      officeNames.split(officeNamesSeparator);
+    for (const officeName of officeNamesArray) {
+      searchspec = searchspec + `[${officeFieldName}]='${officeName}' OR `;
+    }
+    searchspec = searchspec.substring(0, searchspec.length - 4) + `)`;
+    return searchspec;
+  }
+
+  constructQueryHierarchy(parentComponent: QueryHierarchyComponent): string {
+    const queryHierarchy = {};
+    const innerObject = this.constructFieldAndSearchSpec(parentComponent);
+    queryHierarchy[parentComponent.name] = innerObject;
+    return JSON.stringify(queryHierarchy);
+  }
+
+  constructFieldAndSearchSpec(component: QueryHierarchyComponent) {
+    let fields = ``;
+    for (const field of Object.keys(component.classExample)) {
+      if (!component.exclude || !component.exclude.includes(field)) {
+        fields = fields + field + ',';
+      }
+    }
+    fields = fields.substring(0, fields.length - 1); // remove trailing comma
+    const innerObject = { fields };
+    if (component.searchspec) {
+      innerObject[`searchspec`] = component.searchspec;
+    }
+    if (component.childComponents) {
+      for (const child of component.childComponents) {
+        innerObject[child.name] = this.constructFieldAndSearchSpec(child);
+      }
+    }
+    return innerObject;
   }
 }
