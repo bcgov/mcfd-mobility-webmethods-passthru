@@ -1,4 +1,10 @@
-import { Inject, Injectable, Logger } from '@nestjs/common';
+import {
+  HttpException,
+  HttpStatus,
+  Inject,
+  Injectable,
+  Logger,
+} from '@nestjs/common';
 import { Request } from 'express';
 import {
   EntityRecordMap,
@@ -363,11 +369,35 @@ export class AuthService {
           buildNumber: this.buildNumber,
           function: this.getIsAssignedToOfficeUpstream.name,
         });
+        if (error.status === 404) {
+          throw new HttpException({}, HttpStatus.NO_CONTENT, { cause: error });
+        }
+        throw new HttpException(
+          {
+            status: error.status,
+            error:
+              error.response?.data !== undefined
+                ? error.response?.data
+                : error.message,
+          },
+          error.status,
+          { cause: error },
+        );
       } else {
         this.logger.error({ error, buildNumber: this.buildNumber });
+        throw new HttpException(
+          {
+            status: HttpStatus.INTERNAL_SERVER_ERROR,
+            error:
+              error.response?.data !== undefined
+                ? error.response?.data
+                : error.message,
+          },
+          HttpStatus.INTERNAL_SERVER_ERROR,
+          { cause: error },
+        );
       }
     }
-    return [false, searchspec];
   }
 
   async getEmployeeActiveUpstream(
@@ -428,10 +458,31 @@ export class AuthService {
         });
         await this.cacheManager.set(officeNamesKey, undefined, this.cacheTime);
         await this.cacheManager.set(idir, false, this.cacheTime);
+        throw new HttpException(
+          {
+            status: error.status,
+            error:
+              error.response?.data !== undefined
+                ? error.response?.data
+                : error.message,
+          },
+          error.status,
+          { cause: error },
+        );
       } else {
         this.logger.error({ error, buildNumber: this.buildNumber });
+        throw new HttpException(
+          {
+            status: HttpStatus.INTERNAL_SERVER_ERROR,
+            error:
+              error.response?.data !== undefined
+                ? error.response?.data
+                : error.message,
+          },
+          HttpStatus.INTERNAL_SERVER_ERROR,
+          { cause: error },
+        );
       }
     }
-    return [false, undefined];
   }
 }
