@@ -28,7 +28,7 @@
     "@nestjs/core": "^11.0.12",
     "@nestjs/jwt": "^11.0.0",
     "@nestjs/platform-express": "^11.0.12",
-    "axios": "^1.8.4",
+    "axios": "^1.12.1",
     "cache-manager": "^6.4.1",
     "clamscan": "^2.4.0",
     "file-type": "^20.4.1",
