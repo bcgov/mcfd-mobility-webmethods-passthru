@@ -1,5 +1,8 @@
 import { Module } from '@nestjs/common';
-import { wrapRequestSerializer, res as pinoRes } from 'pino-std-serializers';
+import {
+  wrapRequestSerializer,
+  wrapResponseSerializer,
+} from 'pino-std-serializers';
 import { CacheModule } from '@nestjs/cache-manager';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { LoggerModule } from 'nestjs-pino';
@@ -72,14 +75,12 @@ import { JwtModule } from '@nestjs/jwt';
                 remotePort: req.remotePort,
               };
             }),
-            res(res) {
+            res: wrapResponseSerializer((res) => {
               return {
-                ...pinoRes(res.raw),
-                body: JSON.parse(res.raw.locals.responseBody || '{}'),
+                statusCode: res.raw.statusCode,
+                headers: res.headers,
               };
-            },
-            // statusCode: res.raw.statusCode,
-            // headers: res.headers,
+            }),
           },
         },
       }),
