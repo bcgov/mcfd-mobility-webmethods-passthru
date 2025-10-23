@@ -28,26 +28,11 @@ export class NotesService {
   }
 
   async getNotes(body, headers) {
-    const response = await this.requestPreparerService.sendPostRequest(
+    return await this.requestPreparerService.sendPostRequest(
       this.getNotesEndpoint,
       body,
       headers,
     );
-    console.log(response);
-    if (response?.responseGetNotes?.payLoad?.entityType === 'Incident') {
-      // We have to guess the note period, since it is not given.
-      const date = new Date();
-      const dateString =
-        date.toLocaleDateString('en-US', { month: 'short' }) +
-        ' ' +
-        date.getFullYear().toString();
-      if (response?.responseGetNotes?.payLoad?.notes) {
-        for (const note of response.responseGetNotes.payLoad.notes) {
-          note.notePeriod = dateString;
-        }
-      }
-    }
-    return response;
   }
 
   async submitNotesKKCFS(body, headers) {
