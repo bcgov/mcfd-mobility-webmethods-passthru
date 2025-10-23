@@ -5,6 +5,7 @@ import { Logger } from 'nestjs-pino';
 import { Logger as NestJSLogger, VersioningType } from '@nestjs/common';
 import { versionNumber } from './common/constants/parameter-constants';
 import { urlencoded } from 'express';
+import { responseBodyHookMiddleware } from './response-body.middleware';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule, {
@@ -17,6 +18,7 @@ async function bootstrap() {
       rejectUnauthorized: true,
     },
   });
+  app.use(responseBodyHookMiddleware);
   app.useLogger(app.get(Logger));
 
   app.enableVersioning({
