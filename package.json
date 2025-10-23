@@ -1,6 +1,6 @@
 {
   "name": "mcfd-mobility-webmethods-passthru",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "description": "Web methods passthru with authorization checks",
   "author": "MCFD Mobility",
   "license": "MIT License",
