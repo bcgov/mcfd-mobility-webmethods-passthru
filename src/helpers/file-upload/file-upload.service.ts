@@ -27,7 +27,7 @@ export class FileUploadService {
 
   async fileBufferAndTypeCheck(input: string, filename: string) {
     const file = this.base64ToFileBuffer(input, filename);
-    await this.isValidFileType(file, filename);
+    await this.isValidFileType(file as Buffer<ArrayBuffer>, filename);
     return file;
   }
 
