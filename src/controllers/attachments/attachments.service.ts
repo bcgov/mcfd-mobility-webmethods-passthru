@@ -36,7 +36,10 @@ export class AttachmentsService {
       fileString,
       filename,
     );
-    await this.virusScanService.scanFile(fileBuffer, filename);
+    await this.virusScanService.scanFile(
+      fileBuffer as Buffer<ArrayBuffer>,
+      filename,
+    );
     return await this.requestPreparerService.sendPostRequest(
       this.submitEndpoint,
       body,
