@@ -1,6 +1,6 @@
 {
   "name": "mcfd-mobility-webmethods-passthru",
-  "version": "1.1.2",
+  "version": "1.2.0",
   "description": "Web methods passthru with authorization checks",
   "author": "MCFD Mobility",
   "license": "MIT License",
@@ -42,8 +42,8 @@
   },
   "devDependencies": {
     "@jest-mock/express": "^3.0.0",
-    "@nestjs/cli": "^10.0.0",
-    "@nestjs/schematics": "^10.0.0",
+    "@nestjs/cli": "^11.0.0",
+    "@nestjs/schematics": "^11.0.0",
     "@nestjs/testing": "^11.0.12",
     "@types/clamscan": "^2.4.1",
     "@types/express": "^5.0.0",
