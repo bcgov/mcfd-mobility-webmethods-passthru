@@ -23,7 +23,7 @@
   "dependencies": {
     "@nestjs/axios": "^4.0.0",
     "@nestjs/cache-manager": "^3.0.1",
-    "@nestjs/common": "^11.0.12",
+    "@nestjs/common": "^11.1.13",
     "@nestjs/config": "^4.0.2",
     "@nestjs/core": "^11.0.12",
     "@nestjs/jwt": "^11.0.0",
@@ -31,7 +31,7 @@
     "axios": "^1.8.4",
     "cache-manager": "^6.4.1",
     "clamscan": "^2.4.0",
-    "file-type": "^20.4.1",
+    "file-type": "^21.3.1",
     "load-esm": "^1.0.2",
     "multer": "^2.0.0",
     "nestjs-pino": "^4.4.0",
