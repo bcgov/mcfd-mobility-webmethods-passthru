@@ -79,7 +79,6 @@ export class RequestPreparerService {
           cause: error.cause,
           buildNumber: this.buildNumber,
         });
-        throw error;
       } else {
         this.logger.error({ error, buildNumber: this.buildNumber });
       }
