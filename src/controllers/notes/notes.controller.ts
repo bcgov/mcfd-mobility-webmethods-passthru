@@ -32,24 +32,6 @@ export class NotesController {
   @Post('679C')
   @HttpCode(200)
   async submitNotesVisitz(@Body() body, @Headers() headers) {
-    if (body.docRequest) {
-      const redactedRequest = JSON.parse(body.docRequest);
-      if (redactedRequest.requestSubmitNotes?.payLoad?.notes) {
-        if (
-          typeof redactedRequest.requestSubmitNotes?.payLoad?.notes === 'string'
-        ) {
-          redactedRequest['requestSubmitNotes']['payLoad']['noteLength'] =
-            redactedRequest['requestSubmitNotes']['payLoad']['notes'].length;
-        } else if (
-          Array.isArray(redactedRequest.requestSubmitNotes?.payLoad?.notes)
-        ) {
-          redactedRequest['requestSubmitNotes']['payLoad']['noteArrayLength'] =
-            redactedRequest['requestSubmitNotes']['payLoad']['notes'].length;
-        }
-        delete redactedRequest['requestSubmitNotes']['payLoad']['notes'];
-      }
-      this.logger.log(redactedRequest);
-    }
     return await this.notesService.submitNotesVisitz(body, headers);
   }
 }
