@@ -29,36 +29,11 @@ export class NotesService {
   }
 
   async getNotes(body, headers) {
-    const response = await this.requestPreparerService.sendPostRequest(
+    return await this.requestPreparerService.sendPostRequest(
       this.getNotesEndpoint,
       body,
       headers,
     );
-    const redactedNotes = [];
-    if (response.responseGetNotes?.payLoad?.notes) {
-      for (const note of response.responseGetNotes.payLoad.notes) {
-        redactedNotes.push({
-          notePeriod: note.notePeriod,
-          createdDate: note.createdDate,
-          noteLength: (note.notes as string).length,
-          isNotFoundResponse:
-            note.notes ===
-            'No Notes are found for the requested Service Request/Incident/Case number in ICM',
-        });
-      }
-    }
-    const redactedResponse = {
-      responseGetNotes: {
-        payLoad: {
-          error: response.responseGetNotes?.payLoad?.error,
-          entityNumber: response.responseGetNotes?.payLoad?.entityNumber,
-          entityType: response.responseGetNotes?.payLoad?.entityType,
-          notes: redactedNotes,
-        },
-      },
-    };
-    this.logger.log(redactedResponse);
-    return response;
   }
 
   async submitNotesKKCFS(body, headers) {
@@ -72,21 +47,10 @@ export class NotesService {
 
   async submitNotesVisitz(body, headers) {
     await this.submissionFilterService.isEligibleForSubmission(body, headers);
-    const response = await this.requestPreparerService.sendPostRequest(
+    return await this.requestPreparerService.sendPostRequest(
       this.submitNotesVisitzEndpoint,
       body,
       headers,
     );
-    const redactedResponse = {
-      responseSubmitNotes: {
-        payLoad: {
-          status: response.responseSubmitNotes?.payLoad?.status,
-          noteId: response.responseSubmitNotes?.payLoad?.noteId,
-          error: response.responseSubmitNotes?.payLoad?.error,
-        },
-      },
-    };
-    this.logger.log(redactedResponse);
-    return response;
   }
 }
