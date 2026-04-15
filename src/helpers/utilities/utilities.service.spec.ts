@@ -88,4 +88,21 @@ describe('UtilitiesService', () => {
       }).toThrow(`Invalid JWT`);
     });
   });
+
+  describe('officeNamesStringToSearchSpec tests', () => {
+    it.each([
+      [
+        `"CoolOffice"{:|:}'otherOffice'`,
+        'office',
+        `([office]='"CoolOffice"' OR [office]="'otherOffice'")`,
+      ],
+    ])(
+      'should use different quotes in office names when creating search spec',
+      (officeNames, officeFieldName, expected) => {
+        expect(
+          service.officeNamesStringToSearchSpec(officeNames, officeFieldName),
+        ).toBe(expected);
+      },
+    );
+  });
 });
