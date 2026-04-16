@@ -27,3 +27,8 @@ spec:
             - name: WM_APP_ENV
               value: {{ .Values.wmAppEnv }}
       restartPolicy: Always
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 50%
+      maxSurge: 50%
