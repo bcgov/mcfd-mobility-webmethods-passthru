@@ -2,9 +2,13 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { FileUploadService } from './file-upload.service';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import configuration from '../../configuration/configuration';
-import * as loadEsm from 'load-esm';
 import { base64FileString } from '../../common/constants/test-constants';
 import { BadRequestException } from '@nestjs/common';
+jest.mock('load-esm', () => ({
+  __esModule: true,
+  loadEsm: jest.fn(jest.requireActual('load-esm').loadEsm),
+}));
+import { loadEsm } from 'load-esm';
 
 describe('FileUploadService', () => {
   let service: FileUploadService;
@@ -66,7 +70,8 @@ describe('FileUploadService', () => {
 
   describe('loadFileTypeModule tests', () => {
     it('should only load the module once', async () => {
-      const loadSpy = jest.spyOn(loadEsm, 'loadEsm');
+      const loadSpy = loadEsm as jest.Mock;
+      loadSpy.mockClear();
       const fileTypeSpy = jest.spyOn(service, 'loadFileTypeModule');
       await service.loadFileTypeModule();
       await service.loadFileTypeModule();

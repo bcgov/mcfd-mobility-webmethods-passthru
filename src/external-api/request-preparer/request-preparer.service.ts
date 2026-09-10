@@ -71,7 +71,9 @@ export class RequestPreparerService {
         this.httpService.post(url, body, { headers: upstreamHeaders }),
       );
     } catch (error) {
+      let errorMessage: string;
       if (error instanceof AxiosError) {
+        errorMessage = error.message;
         this.logger.error({
           msg: error.message,
           errorDetails: error.response?.data,
@@ -80,12 +82,13 @@ export class RequestPreparerService {
           buildNumber: this.buildNumber,
         });
       } else {
+        errorMessage = error instanceof Error ? error.message : undefined;
         this.logger.error({ error, buildNumber: this.buildNumber });
       }
       throw new HttpException(
         {
           status: HttpStatus.INTERNAL_SERVER_ERROR,
-          error: error.message,
+          error: errorMessage,
         },
         HttpStatus.INTERNAL_SERVER_ERROR,
         { cause: error },
@@ -107,7 +110,11 @@ export class RequestPreparerService {
         this.httpService.get(url, { params, headers }),
       );
     } catch (error) {
+      let errorMessage: string;
+      let errorDetails: unknown;
       if (error instanceof AxiosError) {
+        errorMessage = error.message;
+        errorDetails = error.response?.data;
         this.logger.error({
           msg: error.message,
           errorDetails: error.response?.data,
@@ -116,15 +123,13 @@ export class RequestPreparerService {
           buildNumber: this.buildNumber,
         });
       } else {
+        errorMessage = error instanceof Error ? error.message : undefined;
         this.logger.error({ error, buildNumber: this.buildNumber });
       }
       throw new HttpException(
         {
           status: HttpStatus.INTERNAL_SERVER_ERROR,
-          error:
-            error.response?.data !== undefined
-              ? error.response?.data
-              : error.message,
+          error: errorDetails !== undefined ? errorDetails : errorMessage,
         },
         HttpStatus.INTERNAL_SERVER_ERROR,
         { cause: error },
