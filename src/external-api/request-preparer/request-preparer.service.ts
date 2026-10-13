@@ -1,7 +1,7 @@
 import { HttpService } from '@nestjs/axios';
 import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { AxiosError } from 'axios';
+import axios from 'axios';
 import { firstValueFrom } from 'rxjs';
 import {
   authIdirHeaderName,
@@ -72,10 +72,11 @@ export class RequestPreparerService {
       );
     } catch (error) {
       let errorMessage: string;
-      if (error instanceof AxiosError) {
+      if (axios.isAxiosError(error)) {
         errorMessage = error.message;
         this.logger.error({
           msg: error.message,
+          status: error.status ?? error.response?.status,
           errorDetails: error.response?.data,
           stack: error.stack,
           cause: error.cause,
@@ -112,11 +113,12 @@ export class RequestPreparerService {
     } catch (error) {
       let errorMessage: string;
       let errorDetails: unknown;
-      if (error instanceof AxiosError) {
+      if (axios.isAxiosError(error)) {
         errorMessage = error.message;
         errorDetails = error.response?.data;
         this.logger.error({
           msg: error.message,
+          status: error.status ?? error.response?.status,
           errorDetails: error.response?.data,
           stack: error.stack,
           cause: error.cause,

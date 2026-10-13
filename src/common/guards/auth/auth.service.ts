@@ -8,7 +8,7 @@ import { CACHE_MANAGER } from '@nestjs/cache-manager';
 import { Cache } from 'cache-manager';
 import { ConfigService } from '@nestjs/config';
 import { HttpService } from '@nestjs/axios';
-import { AxiosError } from 'axios';
+import axios from 'axios';
 import {
   authIdirHeaderName,
   CHILD_LINKS,
@@ -348,9 +348,10 @@ export class AuthService {
       );
       return [true, searchspec];
     } catch (error) {
-      if (error instanceof AxiosError) {
+      if (axios.isAxiosError(error)) {
         this.logger.error({
           msg: error.message,
+          status: error.status ?? error.response?.status,
           errorDetails: error.response?.data,
           stack: error.stack,
           cause: error.cause,
@@ -411,9 +412,10 @@ export class AuthService {
       );
       return await this.positionCheck(idir, response);
     } catch (error) {
-      if (error instanceof AxiosError) {
+      if (axios.isAxiosError(error)) {
         this.logger.error({
           msg: error.message,
+          status: error.status ?? error.response?.status,
           errorDetails: error.response?.data,
           stack: error.stack,
           cause: error.cause,
