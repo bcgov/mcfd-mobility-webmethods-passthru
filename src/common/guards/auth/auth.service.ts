@@ -83,7 +83,7 @@ export class AuthService {
     let employeeActive: boolean | null = await this.cacheManager.get(idir);
     let officeNames: string | null =
       await this.cacheManager.get(officeNamesKey);
-    if (employeeActive === null || officeNames === null) {
+    if (employeeActive === undefined || officeNames === undefined) {
       this.logger.log(`Cache not hit for employee status, going upstream...`);
       [employeeActive, officeNames] =
         await this.getEmployeeActiveUpstream(idir);
@@ -135,13 +135,12 @@ export class AuthService {
     );
     const officeNamesKey =
       this.utilitiesService.officeNamesCacheKeyPreparer(idir);
-    let upstreamResult: number | null | undefined =
-      await this.cacheManager.get(key);
+    let upstreamResult: number | undefined = await this.cacheManager.get(key);
     let employeeActive: boolean | null = await this.cacheManager.get(idir);
     let officeNames: string | null =
       await this.cacheManager.get(officeNamesKey);
 
-    if (employeeActive === null || officeNames === null) {
+    if (employeeActive === undefined || officeNames === undefined) {
       this.logger.log(
         `Cache not hit for record type and active status, going upstream...`,
       );
@@ -164,7 +163,7 @@ export class AuthService {
         key,
         searchspec,
       );
-    } else if (upstreamResult === null) {
+    } else if (upstreamResult === undefined) {
       this.logger.log(`Cache not hit for record type, going upstream...`);
       const [isAssignedToOffice, searchspec] =
         await this.getIsAssignedToOfficeUpstream(
