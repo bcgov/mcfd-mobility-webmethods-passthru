@@ -1,7 +1,7 @@
 import { HttpService } from '@nestjs/axios';
 import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { AxiosError } from 'axios';
+import axios from 'axios';
 import { firstValueFrom } from 'rxjs';
 import {
   authIdirHeaderName,
@@ -71,21 +71,25 @@ export class RequestPreparerService {
         this.httpService.post(url, body, { headers: upstreamHeaders }),
       );
     } catch (error) {
-      if (error instanceof AxiosError) {
+      let errorMessage: string;
+      if (axios.isAxiosError(error)) {
+        errorMessage = error.message;
         this.logger.error({
           msg: error.message,
+          status: error.status ?? error.response?.status,
           errorDetails: error.response?.data,
           stack: error.stack,
           cause: error.cause,
           buildNumber: this.buildNumber,
         });
       } else {
+        errorMessage = error instanceof Error ? error.message : undefined;
         this.logger.error({ error, buildNumber: this.buildNumber });
       }
       throw new HttpException(
         {
           status: HttpStatus.INTERNAL_SERVER_ERROR,
-          error: error.message,
+          error: errorMessage,
         },
         HttpStatus.INTERNAL_SERVER_ERROR,
         { cause: error },
@@ -107,24 +111,27 @@ export class RequestPreparerService {
         this.httpService.get(url, { params, headers }),
       );
     } catch (error) {
-      if (error instanceof AxiosError) {
+      let errorMessage: string;
+      let errorDetails: unknown;
+      if (axios.isAxiosError(error)) {
+        errorMessage = error.message;
+        errorDetails = error.response?.data;
         this.logger.error({
           msg: error.message,
+          status: error.status ?? error.response?.status,
           errorDetails: error.response?.data,
           stack: error.stack,
           cause: error.cause,
           buildNumber: this.buildNumber,
         });
       } else {
+        errorMessage = error instanceof Error ? error.message : undefined;
         this.logger.error({ error, buildNumber: this.buildNumber });
       }
       throw new HttpException(
         {
           status: HttpStatus.INTERNAL_SERVER_ERROR,
-          error:
-            error.response?.data !== undefined
-              ? error.response?.data
-              : error.message,
+          error: errorDetails !== undefined ? errorDetails : errorMessage,
         },
         HttpStatus.INTERNAL_SERVER_ERROR,
         { cause: error },
